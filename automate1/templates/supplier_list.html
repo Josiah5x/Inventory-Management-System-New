@@ -1,0 +1,157 @@
+{% extends 'base.html'%}
+<!-- Static file loader -->
+{% load static %} {% block content %}
+<!-- The Modal -->
+<style>
+    body {
+        background: #f4f6f9;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+    }
+
+    .table thead {
+        background: #0d6efd;
+        color: #fff;
+    }
+
+    .btn-action {
+        width: 80px;
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <div class="card">
+
+            <div class="card-header text-dark">
+                <h4 class="mb-0">Supplier List</h4>
+            </div>
+
+            <div class="card-body">
+                <div style="width:40px">
+                    <a href="{% url 'supplier_create' %}" class="btn btn-dark">
+                        +
+                    </a>
+                </div>
+
+                <table class="table table-hover table-bordered align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <!-- <th width="180">Action</th> -->
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for suppliers in supplier %}
+
+                        <tr>
+
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ suppliers.name }}</td>
+                            <td>{{ suppliers.address}}</td>
+                            <td>{{ suppliers.phone }}</td>
+                            <td>{{ suppliers.email}}</td>
+
+                            <!-- <td>
+                                <div class="toolbar d-flex justify-content-between">
+
+                                    <a href="{% url 'order_view' suppliers.id %}" class="btn btn-success btn-sm btn-action">
+                                        View
+                                    </a>
+
+                                    <button class="btn btn-danger btn-sm btn-action delete-btn"
+                                        data-id="{{ suppliers.id }}">
+                                        Delete
+                                    </button>
+
+                                    <a href="{% url 'update_purchase' suppliers.id %}"
+                                        class="btn btn-warning btn-sm btn-action">
+                                        Edit
+                                    </a>
+                                </div>
+
+                            </td> -->
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                No Purchase Orders Found
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        document.querySelectorAll(".delete-btn").forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                let id = this.dataset.id;
+
+                if (confirm("Delete this Order?")) {
+
+                    fetch(`/orders/delete/${id}/`, {
+
+                        method: "POST",
+
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        }
+
+                    })
+
+                        .then(response => response.json())
+
+                        .then(data => {
+
+                            if (data.status === "success") {
+
+                                alert("Deleted Successfully");
+
+                                location.reload();
+
+                            } else {
+
+                                alert(data.message);
+
+                            }
+
+                        });
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+    {% endblock content %}

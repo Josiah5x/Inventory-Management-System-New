@@ -1,0 +1,58 @@
+{% extends 'base.html'%}
+<!-- Static file loader -->
+{% load static %} {% block content %}
+<!-- The Modal -->
+ <ul class='nav nav-tabs mb-4'>
+        <li class='nav-item'><a class='nav-link active'>Main Information</a></li>
+        <li class='nav-item'><a class='nav-link'>Additional Info</a></li>
+        <li class='nav-item'><a class='nav-link'>Additional Fields</a></li>
+        <li class='nav-item'><a class='nav-link'>Related</a></li>
+        <li class='ms-auto pt-2'><span class='text-success'><i class='bi bi-check-lg'></i> Active</span> <i
+                class='bi bi-pencil-square text-primary'></i></li>
+    </ul>
+    <div class='container'>
+        <form action="">
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Product Code <span class='req'>*</span></label>
+            <div class='col-md-4'><input class='form-control'></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Product Name <span class='req'>*</span></label>
+            <div class='col-md-4'><input class='form-control'></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Secondary Name</label>
+            <div class='col-md-4'><input class='form-control'></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Description</label>
+            <div class='col-md-4'><textarea class='form-control' rows='4'></textarea></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Type <span class='req'>*</span></label>
+            <div class='col-md-4'><select class='form-select'>
+                    <option>Stock</option>
+                </select></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>VAT Category <span class='req'>*</span></label>
+            <div class='col-md-4'><select class='form-select'>
+                    <option>--None--</option>
+                </select></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Unit <span class='req'>*</span></label>
+            <div class='col-md-4 d-flex'><select class='form-select'>
+                    <option>--None--</option>
+                </select><button class='btn btn-success ms-2 rounded-circle'><i class='bi bi-plus-lg'></i></button>
+            </div>
+        </div>
+        <div class='row mb-'><label class='col-md-3 fw-bold'>Selling Price</label>
+            <div class='col-md-4'><input class='form-control'></div>
+        </div>
+        <div class='row mb-2'><label class='col-md-3 fw-bold'>Currency</label>
+            <div class='col-md-4'><select class='form-select'>
+                    <option>--None--</option>
+                </select></div>
+        </div>
+    <div class="row mb-">
+        <div class='col-md-8'>
+        <button type="button" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+    </div>
+    
+
+
+{% endblock content %}
