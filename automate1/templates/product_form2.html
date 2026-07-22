@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container w-50 mt-4">
+
+    <div class="card shadow">
+         <div class="card-header text-dark">
+            <h4>Add Products</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" action="{% url 'product_create' %}">
+                {% csrf_token %}
+
+                <!-- Product Code -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Product Code</label>
+                    <div class="col-md-7">
+                        <input type="text" name="product_code" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Product Name -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Product Name</label>
+                    <div class="col-md-7">
+                        <input type="text" name="product_name" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Secondary Name -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Secondary Name</label>
+                    <div class="col-md-7">
+                        <input type="text" name="secondary_name" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Description</label>
+                    <div class="col-md-7">
+                        <textarea name="description" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <!-- Type -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Type</label>
+                    <div class="col-md-7">
+                        <select name="types" class="form-select">
+                            <option value="Goods">Goods</option>
+                            <option value="Service">Service</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- VAT -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">VAT</label>
+                    <div class="col-md-7">
+                        <select name="vat_category" class="form-select">
+                            <option value="--None--">--None--</option>
+                            {% for vat in vats %}
+                                <option value="{{ vat.id }}">{{ vat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                            <a href="{% url 'vat_create' %}" class="btn btn-dark">
+                        +
+                    </a>
+                    </div>
+                </div>
+
+                <!-- Unit -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Unit</label>
+                    <div class="col-md-7">
+                        <input type="text" name="unit" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Selling Price -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Selling Price</label>
+                    <div class="col-md-7">
+                        <input type="number" step="0.01" name="selling_price" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Selling Currency -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Selling Currency</label>
+                    <div class="col-md-7">
+                        <select name="selling_currency" class="form-select">
+                            <option value="--None--">--None--</option>
+                            {% for currency in currencies %}
+                                <option value="{{ currency.id }}">{{ currency.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                            <a href="{% url 'currency_create' %}" class="btn btn-dark">
+                        +
+                    </a>
+                    </div>
+                </div>
+
+                <!-- Brand -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Brand</label>
+                    <div class="col-md-7">
+                        <input type="text" name="brand" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Family -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Family</label>
+                    <div class="col-md-7">
+                        <input type="text" name="family" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Sub Family -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Sub Family</label>
+                    <div class="col-md-7">
+                        <input type="text" name="sub_family" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Shelf No -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Shelf No</label>
+                    <div class="col-md-7">
+                        <input type="text" name="shelf_no" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Supplier -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Supplier</label>
+                    <div class="col-md-7">
+                        <select name="supplier" class="form-select">
+                            <option value="--None--">--None--</option>
+                            {% for supplier in suppliers %}
+                                <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                     <div class="col-md-1">
+                            <a href="{% url 'supplier_create' %}" class="btn btn-dark">
+                        +
+                    </a>
+                    </div>
+                </div>
+
+                <!-- Supplier Item Code -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Supplier Item Code</label>
+                    <div class="col-md-7">
+                        <input type="text" name="supplier_item_code" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Supplier Price -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Supplier Price</label>
+                    <div class="col-md-7">
+                        <input type="number" step="0.01" name="supplier_price" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Supplier Currency -->
+                <div class="row mb-4">
+                    <label class="col-md-3 col-form-label">Supplier Currency</label>
+                    <div class="col-md-7">
+                        <select name="supplier_currency" class="form-select">
+                            <option value="--None--">--None--</option>
+                            {% for currency in currencies %}
+                                <option value="{{ currency.id }}">{{ currency.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                            <a href="{% url 'currency_create' %}" class="btn btn-dark">
+                        +
+                    </a>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                   <input type="submit" class="btn btn-success"
+                    value="Save"/>
+                </div>
+
+            </form>
+        </div></div></div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

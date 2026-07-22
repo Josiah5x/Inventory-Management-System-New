@@ -1,0 +1,218 @@
+{% extends 'base.html'%}
+<!-- Static file loader -->
+{% load static %} {% block content %}
+       <div class="container py-5">
+    <div class="row justify-content-center g-5">
+
+        <!-- Product -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'product_list' %}"><i class="bi bi-folder2-open me-2"></i>Open</a></li>
+                    <li><a class="dropdown-item" href="{% url 'product_create' %}""><i class="bi bi-plus-circle me-2"></i>New</a></li>
+                  
+                </ul>
+            </div>
+
+            <a href="{% url 'product_list' %}" class="module-link">
+                <div class="rectangle">
+                    <i class="bi bi-boxes"></i>
+                </div>
+            </a>
+            <h4>Product</h4>
+        </div>
+
+        <!-- Sales -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'sale' %}"><i class="bi bi-folder2-open me-2"></i>Open</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-plus-circle me-2"></i>New Sale</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-bar-chart me-2"></i>Reports</a></li>
+                </ul>
+            </div>
+
+            <a href="{% url 'sale' %}" class="module-link">
+                <div class="rectangle">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+            </a>
+            <h4>Sales</h4>
+        </div>
+
+        <!-- Banking -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-folder2-open me-2"></i>Open</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-credit-card me-2"></i>Transactions</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-bank"></i>
+            </div>
+            <h4>Banking</h4>
+        </div>
+
+        <!-- Purchases -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'purchase' %}"><i class="bi bi-folder2-open me-2"></i>Open</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-plus-circle me-2"></i>New Purchase</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-receipt me-2"></i>Invoices</a></li>
+                </ul>
+            </div>
+
+            <a href="{% url 'purchase' %}" class="module-link">
+                <div class="rectangle">
+                    <i class="bi bi-cart"></i>
+                </div>
+            </a>
+            <h4>Purchases</h4>
+        </div>
+
+        <!-- Reports -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-folder2-open me-2"></i>Open</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-bar-graph me-2"></i>Financial Report</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <h4>Reports</h4>
+        </div>
+
+        <!-- Fixed Assets -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Open</a></li>
+                    <li><a class="dropdown-item" href="#">Register Asset</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+            <h4>Fixed Assets</h4>
+        </div>
+
+        <!-- Warehouse -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Open</a></li>
+                    <li><a class="dropdown-item" href="#">Stock Transfer</a></li>
+                    <li><a class="dropdown-item" href="#">Stock Count</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-house"></i>
+            </div>
+            <h4>Warehouse<br>Management</h4>
+        </div>
+
+        <!-- Supplier -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'supplier_list' %}">Open</a></li>
+                    <li><a class="dropdown-item" href="{% url 'supplier_create' %}">New Supplier</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-people"></i>
+            </div>
+            <h4>Supplier</h4>
+        </div>
+
+        <!-- Project -->
+        <div class="col-lg-2 col-md-4 col-6 module">
+            <div class="dropdown module-menu">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Open</a></li>
+                    <li><a class="dropdown-item" href="#">New Project</a></li>
+                </ul>
+            </div>
+
+            <div class="rectangle">
+                <i class="bi bi-clipboard"></i>
+            </div>
+            <h4>Project</h4>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.module {
+    position: relative;
+    text-align: center;
+}
+
+.module-menu {
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    z-index: 100;
+}
+
+.module-menu .dropdown-toggle {
+    border: none;
+    background: transparent;
+    color: #666;
+    box-shadow: none;
+    padding: 4px;
+}
+
+.module-menu .dropdown-toggle::after {
+    display: none;
+}
+
+.module-menu .dropdown-toggle:hover {
+    color: #0d6efd;
+}
+
+.module-menu .dropdown-menu {
+    min-width: 180px;
+}
+</style>
+    {% endblock content %}
+</body>
+
+</html>

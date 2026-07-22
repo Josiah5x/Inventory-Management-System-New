@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container w-50 mt-4">
+
+    <div class="card ">
+        <div class="card-header text-dark">
+            <h4>Add Supplier</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" action="{% url 'supplier_create' %}">
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Supplier Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            class="form-control"
+                            required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Phone</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Address</label>
+                        <textarea
+                            name="address"
+                            rows="4"
+                            class="form-control"></textarea>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-success"
+                    value="Save"/>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
