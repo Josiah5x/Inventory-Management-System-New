@@ -63,6 +63,22 @@ def Supplier_form(request):
     context = {"supplier": supplier}
     return render(request, "supplier_list.html", context)
 
+def Purchase_list(request):
+    purchases = OrderDocument.objects.prefetch_related('items').all().order_by('-id')
+
+    # purchases = OrderDocument.objects.all()
+    currencies = Currency.objects.all()
+    suppliers = Supplier.objects.all()
+    context = {
+        "purchases": purchases,
+        "currencies": currencies,
+        "suppliers": suppliers,
+    }
+
+    return render(request, "purchase_list.html", context)
+    # currencies = Currency.objects.all()
+    # return render(request, "purchase_list.html", context)
+
 def Product_List(request):
     orders = OrderDocument.objects.all().order_by("-id")
     # return render(request, "orders.html", {"orders": orders})
@@ -190,7 +206,7 @@ def save_purchase(request):
                     supplier_invoice=data.get("supplier_invoice"),
                     currency=data.get("currency"),
                     credit_fercility=data.get("credit_fercility"),
-                    address=data.get("address"),
+                    address=data.get("supplier_address"),
                     project=data.get("project"),
                 )
 
