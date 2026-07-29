@@ -42,7 +42,53 @@ $(document).ready(function () {
         // updateRowNumbers();
     });
 
+
+    
+
     // Submit form
+    $("#submitBtnUpdate").click(function (e) {
+        e.preventDefault();
+
+        const documentId = document.getElementById("document_id").value;
+        var data = $("#UpdatedataForm");
+
+        // 1. Paste your raw string directly into this variable
+        const rawData = data.serialize();
+
+        fetch("purchase/update", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Reads your cookie tokens perfectly
+            },
+            body: JSON.stringify(rawData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+        });
+
+        // Helper function to extract Django's CSRF cookie value safely
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie string begins with the name we want
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        });
+
+
+
     $("#submitBtn").click(function (e) {
         var $btn = $(this);
 

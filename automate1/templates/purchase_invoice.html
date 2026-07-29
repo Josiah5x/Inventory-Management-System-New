@@ -116,6 +116,7 @@
                             <span class="col-md-5 col-form-label">Currency *</span>
                             <select class="form-select" id="currency" name="currency">
                                 <option value="--None--">--None--</option>
+                                <!-- <option value="--None--">--None--</option> -->
                                 {% for currency in currencies %}
                                 <option value="{{currency.id}}">{{currency.name}}</option>
                                 {% endfor %}

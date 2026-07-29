@@ -85,15 +85,76 @@ def Product_List(request):
     return render(request, "product_list.html", {"orders": orders})
 
 def Update_Purchase(request, pk):
-    order = get_object_or_404(OrderDocument, pk=pk)
-    return render(
-        request,
-        "update_purchase.html",
-        {
-            "order": order,
-            "orderitems": order.items.all(),
-        },
-    )
+    if request.method == "GET":
+        order = get_object_or_404(OrderDocument, pk=pk)
+        current_time = datetime.now()
+
+        # 2. Extract just the year as an integer
+        current_year = current_time.year
+        suppliers = Supplier.objects.all()
+        creditfacility = CreditFacility.objects.all()
+        currencies = Currency.objects.all()
+        return render(
+            request,
+            "update_purchase.html",
+            {
+                "suppliers": suppliers,
+                "creditfacility": creditfacility,
+                "currencies": currencies,
+                "current_year":current_year,
+                "order": order,
+                "orderitems": order.items.all(),
+            },
+        )
+        # Save the updated record
+    elif request.method == "POST":
+        data = json.loads(request.body)
+        print(json.dumps(data))
+
+    #     try:
+    #         data = json.loads(request.body)
+    #         print(json.dumps(data))
+
+    #         with transaction.atomic():
+    #             # Save parent matching your exact frontend keys
+    #             document = OrderDocument.objects.create(
+    #                 doc_code=data.get("doc_code"),
+    #                 doc_year=data.get("doc_year"),
+    #                 doc_num=data.get("doc_num"),
+    #                 supplier_name=data.get("supplier_name"),
+    #                 supplier_invoice=data.get("supplier_invoice"),
+    #                 currency=data.get("currency"),
+    #                 credit_fercility=data.get("credit_fercility"),
+    #                 address=data.get("supplier_address"),
+    #                 project=data.get("project"),
+    #             )
+
+    #             # Save the new parallel array values
+    #             for item in data.get("items", []):
+    #                 OrderItem.objects.create(
+    #                     document=document,
+    #                     product_code=item.get("product_code"),
+    #                     product_description=item.get("product_Description"),
+    #                     warehouse=item.get("product_warehouse"),
+    #                     product_qty=item.get("product_qty"),
+    #                     product_unit=item.get("product_unit"),
+    #                     product_price=item.get("product_price"),
+    #                     product_amount=item.get("product_amount"),
+    #                     percentage_discount=item.get("percentage_discount"),
+    #                     discount=item.get("discount"),
+    #                     gross_amount=item.get("gross_amount"),
+    #                 )
+
+    #         return JsonResponse(
+    #             {"status": "success", "message": "Data saved smoothly!"}, status=201
+    #         )
+
+    #     except Exception as e:
+    #         return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+    # return JsonResponse(
+    #     {"status": "error", "message": "Method not allowed"}, status=405
+    # )
 
 
 def order_view(request, pk):
