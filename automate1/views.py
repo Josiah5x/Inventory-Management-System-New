@@ -64,9 +64,9 @@ def Supplier_form(request):
     return render(request, "supplier_list.html", context)
 
 def Purchase_list(request):
-    purchases = OrderDocument.objects.prefetch_related('items').all().order_by('-id')
+    # purchases = OrderDocument.objects.prefetch_related('items').all().order_by('-id')
 
-    # purchases = OrderDocument.objects.all()
+    purchases = OrderDocument.objects.all()
     currencies = Currency.objects.all()
     suppliers = Supplier.objects.all()
     context = {

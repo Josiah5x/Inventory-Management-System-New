@@ -78,7 +78,7 @@
 </div>
 <input type="hidden" id="document_id" value="{{ order.id }}">
 <form id="UpdatedataForm">
-     {% csrf_token %}
+    {% csrf_token %}
     <div class="container-fluid mt-1">
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active">Invoice</a></li>
@@ -90,8 +90,10 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Invoice*</span>
-                            <div class="col"><input class="form-control" name="doc_code" value="{{order.doc_code}}" ></div>
-                            <div class="col"><input class="form-control" name="doc_year" value="{{order.doc_year}}"></div>
+                            <div class="col"><input class="form-control" name="doc_code" value="{{order.doc_code}}">
+                            </div>
+                            <div class="col"><input class="form-control" name="doc_year" value="{{order.doc_year}}">
+                            </div>
                             <div class="col"><input class="form-control" name="doc_num" value="{{order.doc_num}}"></div>
                         </div>
                     </div>
@@ -111,13 +113,11 @@
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Currency *</span>
                             <select class="form-select" id="currency" name="currency">
-                                <!-- <option value="">--None--</option> -->
 
                                 {% for currency in currencies %}
-                                    <option value="{{ currency.name }}"
-                                        {% if currency.id == order.currency.id %}selected{% endif %}>
-                                        {{ currency.name }}
-                                    </option>
+                                <option value="{{ currency.name }}" {% if currency.name == order.currency %}selected{% endif %}>
+                                    {{ currency.name }}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -126,10 +126,12 @@
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Supplier *</span>
                             <select class="form-select" id="supplier_select" name="supplier_name">
-                                <option value="--None--">--None--</option>
-                                {% for supplier in suppliers %}
-                                <option value="{{supplier.id}}" data-address="{{supplier.address}}">{{supplier.name}}
-                                </option>
+                                  {% for supplier in suppliers %}
+                                    <option value="{{ supplier.id }}"
+                                            {% if supplier.id|stringformat:"s" == order.supplier_name %}selected{% endif %}
+                                            data-address="{{ supplier.address }}">
+                                        {{ supplier.name }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -137,13 +139,15 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select" name="credit_f" id="credit_f">
+                            <select class="form-select" name="credit_fercility">
+
                                 {% for credit_f in creditfacility %}
-                                    <option value="{{ credit_f.name }}"
-                                        {% if credit_f.id == order.credit_f.id %}selected{% endif %}>
-                                        {{ credit_f.name }}
-                                    </option>
+                                <option value="{{ credit_f.id }}" 
+                                {% if credit_f.id|stringformat:"s" == order.credit_fercility %}selected{% endif %}>
+                                    {{ credit_f.name }}
+                                </option>
                                 {% endfor %}
+
                             </select>
                         </div>
                     </div>
@@ -152,7 +156,7 @@
                             <span class="col-md-2 col-form-label">Address*</span>
                             <!-- <label>Address</label> -->
                             <textarea class="form-control" id="supplier_address" name="supplier_address"
-                                readonly></textarea>
+                                readonly> {{order.address}}</textarea>
                         </div>
                         <div class="col-md-6 mt-3">
                             <div class="input-group">
@@ -164,8 +168,8 @@
                     </div>
                 </div>
             </div>
-             <!-- ///////////// -->
-   
+            <!-- ///////////// -->
+
             <div class="col-lg-4">
                 <div class="summary">
                     <div class="d-flex justify-content-between"><b>Amount</b><span>120,000.00</span></div>
