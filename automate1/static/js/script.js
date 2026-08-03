@@ -30,8 +30,12 @@ $(document).ready(function () {
        <tr>
                 <td></td>
 
-                <td>
-                    <input type="text" class="form-control" name="product_code">
+                <td style="position:relative; min-width:300px;">
+                <input type="text"
+                      class="form-control product-code"
+                      name="product_code"
+                      autocomplete="off">
+                    <div class="product-results"></div>
                 </td>
 
                 <td>
@@ -154,40 +158,78 @@ $(document).ready(function () {
   // ==========================
   // Auto Fill Product Details
   // ==========================
-  $(document).on("keyup change", "[name='product_code']", function () {
-    let row = $(this).closest("tr");
-    let value = $(this).val().trim().toLowerCase();
+ 
+  $(document).on("keyup", ".product-code", function () {
 
-    if (value === "") {
-      row.find("[name='product_description']").val("");
-      row.find("[name='product_unit']").val("");
-      row.find("[name='product_price']").val("");
-      row.find("[name='product_amount']").val("");
-      row.find("[name='discount']").val("");
-      row.find("[name='gross_amount']").val("");
-      calculateInvoiceTotal();
-      return;
+    let row = $(this).closest("tr");
+    let keyword = $(this).val().toLowerCase().trim();
+
+    let resultBox = row.find(".product-results");
+
+    resultBox.empty();
+
+    if (keyword.length === 0) {
+        resultBox.hide();
+        return;
     }
 
-    // Search by Product Code OR Product Name
-    let product = products.find(
-      (p) =>
-        (p.product_code && p.product_code.toLowerCase() === value) ||
-        (p.product_name && p.product_name.toLowerCase() === value)
+    let matches = products.filter(p =>
+
+        (p.product_code &&
+         p.product_code.toLowerCase().includes(keyword))
+
+        ||
+
+        (p.product_name &&
+         p.product_name.toLowerCase().includes(keyword))
+
+        ||
+
+        (p.description &&
+         p.description.toLowerCase().includes(keyword))
+
     );
 
-    if (product) {
-      row.find("[name='product_code']").val(product.product_code);
-      row
-        .find("[name='product_description']")
-        .val(product.description || product.product_name);
-      row.find("[name='product_unit']").val(product.unit);
-      row.find("[name='product_price']").val(product.price);
-
-      // Recalculate automatically
-      row.find("[name='product_qty']").trigger("input");
+    if(matches.length === 0){
+        resultBox.hide();
+        return;
     }
-  });
+
+    matches.forEach(function(product){
+
+        resultBox.append(`
+            <div class="product-item"
+                 data-id="${product.id}">
+                <strong>${product.product_code}</strong><br>
+                ${product.product_name}
+            </div>
+        `);
+
+    });
+
+    resultBox.show();
+
+});
+
+$(document).on("click", ".product-item", function(){
+
+    let row = $(this).closest("tr");
+
+    let id = $(this).data("id");
+
+    let product = products.find(p => p.id == id);
+
+    row.find("[name='product_code']").val(product.product_code);
+    row.find("[name='product_description']").val(product.description);
+    row.find("[name='product_unit']").val(product.unit);
+    row.find("[name='product_price']").val(product.price);
+
+    row.find(".product-results").hide();
+
+    // Recalculate totals
+    row.find("[name='product_qty']").trigger("input");
+
+});
 
   // ==========================
   // Remove Row

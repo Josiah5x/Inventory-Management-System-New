@@ -95,8 +95,8 @@
     position:sticky;
     top:0;
     z-index:10;
-    background:#212529;
-    color:#fff;
+    background:#ebedee;
+    color:#2b2929;
     white-space:nowrap;
 }
 
@@ -104,6 +104,29 @@
 .table-container th{
     white-space:nowrap;
     vertical-align:middle;
+}
+
+.product-results{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#fff;
+    border:1px solid #ddd;
+    max-height:250px;
+    overflow-y:auto;
+    z-index:9999;
+    display:none;
+}
+
+.product-item{
+    padding:8px 12px;
+    cursor:pointer;
+}
+
+.product-item:hover{
+    background:#0d6efd;
+    color:#fff;
 }
 </style>
 <div class="toolbar d-flex justify-content-between">
