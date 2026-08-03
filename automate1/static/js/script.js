@@ -1,206 +1,329 @@
 $(document).ready(function () {
+  // ==========================
+  // CSRF Helper
+  // ==========================
+  function getCookie(name) {
+    let cookieValue = null;
 
-    // Add row
-    $("#add-row").click(function () {
-        // var rowCount = $("#table-body tr").length + 1;
-        var newRow = `
-        <tr>
-                <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked style="width: 25px; height: 25px"></td>
-                <td><input type="text" class="form-control" name="product_code" value="4i4564 Cmp-Fuel Pump"></td>
-                <td><input type="text" class="form-control" name="product_description"></td>
-                <td><input type="text" class="form-control" value="Kuje Store" name="warehouse">
-                </td>
-                <td><input type="text" class="form-control" value="1.000" name="product_qty"></td>
-                <td>
-                    <select class="form-control" name="product_unit" id="product_unit"
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
 
-                        <option value=""></option>
-                        <option value="PC">PC</option>
-                        <option value="LIT">LIT</option>
-                        <option value="SET">SET</option>
-                        <option value="GALLON">GALLON</option>
-                        <option value="MTR">MTR</option>
-                    </select>
-                </td>
-                <td><input type="text" class="form-control" name="product-rate" value="120,000.00">
-                </td>
-                <td><input type="text" class="form-control" name="product-rate"></td>
-                <td><input type="text" class="form-control" name="percentage-discount" value="%0">
-                </td>
-                <td><input type="text" class="form-control" name="discount" value="120,000.00">
-                </td>
-                <td><input type="text" class="form-control" name="gross-amount" value="120,000.00">
-                </td>
-            </tr>`;
-        $("#table-body").append(newRow);
-        // updateRowNumbers();
-    });
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
 
-    // Remove row
-    $(document).on("click", ".remove-row", function () {
-        $(this).closest("tr").remove();
-        // updateRowNumbers();
-    });
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
 
-
-    
-
-    // Submit form
-    $("#submitBtnUpdate").click(function (e) {
-        e.preventDefault();
-
-        const documentId = document.getElementById("document_id").value;
-        var data = $("#UpdatedataForm");
-
-        // 1. Paste your raw string directly into this variable
-        const rawData = data.serialize();
-
-        fetch("purchase/update", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken') // Reads your cookie tokens perfectly
-            },
-            body: JSON.stringify(rawData)
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert(data.message);
-        });
-
-        // Helper function to extract Django's CSRF cookie value safely
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Check if this cookie string begins with the name we want
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
+          break;
         }
-
-        });
-
-
-
-    $("#submitBtn").click(function (e) {
-        var $btn = $(this);
-
-        // 1. Show loader and disable button
-        $btn.prop('disabled', true);
-        $('#loader').show();
-        $('#response-message').empty(); // Clear previous messages
-        // $("#dataForm").submit(function (e) {
-        e.preventDefault();
-
-
-        var targetForm = $("#dataForm");
-
-        // 1. Paste your raw string directly into this variable
-        const rawData = targetForm.serialize();
-        // 2. Run the parser function
-        const structuredObject = parseRawData(rawData);
-
-        // 3. View your clean object
-        // console.log(structuredObject);
-
-
-
-        // Helper function to extract Django's CSRF cookie value safely
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Check if this cookie string begins with the name we want
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        let url = 'savepurchase';
-        $.ajax({
-            url: url,
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken') // Reads your cookie tokens perfectly
-            },
-            data: JSON.stringify(structuredObject), // Sends structured parent/child properties cleanly
-            contentType: "application/json",
-            success: function (response) {
-                // Stringified because alert() cannot print objects directly
-                alert("Data saved successfully! Message: " + response.message);
-            },
-            error: function (xhr, status, error) {
-                alert("Error saving data: " + error);
-            }
-        });
-
-    });
-
-    // --- PARSER ENGINE CODE ---
-    function parseRawData(queryString) {
-        const params = new URLSearchParams(queryString);
-
-        // Extract top-level document info
-        const result = {
-            doc_code: params.get("doc_code") || "",
-            doc_year: params.get("doc_year") || "",
-            doc_num: params.get("doc_num") || "",
-            supplier_name: params.get("supplier_name") || "",
-            supplier_invoice: params.get("supplier_invoice") || "",
-            currency: params.get("currency") || "",
-            credit_fercility: params.get("credit_f") || "",
-            supplier_address: params.get("supplier_address") || "",
-            project: params.get("project") || "",
-            items: []
-        };
-
-        // Capture every duplicate key entry into arrays
-        const productCodes = params.getAll("code");
-        const productDescriptions = params.getAll("description");
-        const productWarehouse = params.getAll("warehouse");
-        const productQtys = params.getAll("qty");
-        const productUnits = params.getAll("unit");
-        const productPrice = params.getAll("unit-price").filter(val => val !== ""); // Ignores trailing blank updates
-        const productAmount = params.getAll("amount");
-        const discountPercentages = params.getAll("percentage-discount");
-        const discounts = params.getAll("discount");
-        const grossAmounts = params.getAll("gross-amount");
-
-        // Loop through and map array columns to item objects
-        for (let i = 0; i < productCodes.length; i++) {
-            result.items.push({
-                product_code: productCodes[i] || "",
-                product_Description: productDescriptions[i] || "",
-                product_warehouse: productWarehouse[i] || "",
-                product_qty: parseFloat(productQtys[i]) || 0,
-                product_unit: productUnits[i] || "",
-                product_price: parseFloat(productPrice[i]?.replace(/,/g, "")) || 0,
-                product_amount: parseFloat(productAmount[i]?.replace(/,/g, "")) || 0,
-                percentage_discount: parseFloat(discountPercentages[i]?.replace("%", "")) || 0,
-                discount: parseFloat(discounts[i]?.replace(/,/g, "")) || 0,
-                gross_amount: parseFloat(grossAmounts[i]?.replace(/,/g, "")) || 0
-            });
-        }
-
-        return result;
+      }
     }
 
+    return cookieValue;
+  }
+
+  // ==========================
+  // Add Row
+  // ==========================
+  $("#add-row").click(function () {
+    let newRow = `
+       <tr>
+                <td></td>
+
+                <td>
+                    <input type="text" class="form-control" name="product_code">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="product_description">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="warehouse" value="Kuje Store">
+                </td>
+
+                <td>
+                    <input type="number" class="form-control" name="product_qty" value="1">
+                </td>
+
+                <td>
+                    <select class="form-control" name="product_unit">
+                        <option value=""></option>
+                        <option>Pcs</option>
+                        <option>Lits</option>
+                        <option>SET</option>
+                        <option>Gallons</option>
+                        <option>Meters</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="product_price">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="product_amount" readonly>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="percentage_discount">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="discount" readonly>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="gross_amount" readonly>
+                </td>
+            </tr>
+        `;
+
+    $("#table-body").append(newRow);
+  });
+
+  // Auto calculate whenever Qty, Price or Discount changes
+  $(document).on(
+    "input",
+    "[name='product_qty'], [name='product_price'], [name='percentage_discount']",
+    function () {
+      let row = $(this).closest("tr");
+
+      // Read values
+      let qty = parseFloat(row.find("[name='product_qty']").val()) || 0;
+
+      let price =
+        parseFloat(
+          row.find("[name='product_price']").val().replace(/,/g, "")
+        ) || 0;
+
+      let discountPercent =
+        parseFloat(
+          row.find("[name='percentage_discount']").val().replace("%", "")
+        ) || 0;
+
+      // Calculate Amount
+      let amount = qty * price;
+
+      // Calculate Discount
+      let discount = (amount * discountPercent) / 100;
+
+      // Calculate Gross
+      let gross = amount - discount;
+
+      // Update fields
+      row.find("[name='product_amount']").val(amount.toFixed(2));
+      row.find("[name='discount']").val(discount.toFixed(2));
+      row.find("[name='gross_amount']").val(gross.toFixed(2));
+
+      // Update Invoice Total
+      calculateInvoiceTotal();
+    }
+  );
+
+  function calculateInvoiceTotal() {
+    let total = 0;
+
+    $("#table-body tr").each(function () {
+      let gross =
+        parseFloat(
+          $(this).find("[name='gross_amount']").val().replace(/,/g, "")
+        ) || 0;
+
+      total += gross;
+    });
+
+    $("#invoice_total").val(total.toFixed(2));
+  }
+
+  // ==========================
+  // Load Products from Database
+  // ==========================
+  let products = [];
+
+  fetch("/products/json/")
+    .then((response) => response.json())
+    .then((data) => {
+      products = data;
+      console.log("Products Loaded:", products);
+    })
+    .catch((error) => {
+      console.error("Error loading products:", error);
+    });
+
+  // ==========================
+  // Auto Fill Product Details
+  // ==========================
+  $(document).on("keyup change", "[name='product_code']", function () {
+    let row = $(this).closest("tr");
+    let value = $(this).val().trim().toLowerCase();
+
+    if (value === "") {
+      row.find("[name='product_description']").val("");
+      row.find("[name='product_unit']").val("");
+      row.find("[name='product_price']").val("");
+      row.find("[name='product_amount']").val("");
+      row.find("[name='discount']").val("");
+      row.find("[name='gross_amount']").val("");
+      calculateInvoiceTotal();
+      return;
+    }
+
+    // Search by Product Code OR Product Name
+    let product = products.find(
+      (p) =>
+        (p.product_code && p.product_code.toLowerCase() === value) ||
+        (p.product_name && p.product_name.toLowerCase() === value)
+    );
+
+    if (product) {
+      row.find("[name='product_code']").val(product.product_code);
+      row
+        .find("[name='product_description']")
+        .val(product.description || product.product_name);
+      row.find("[name='product_unit']").val(product.unit);
+      row.find("[name='product_price']").val(product.price);
+
+      // Recalculate automatically
+      row.find("[name='product_qty']").trigger("input");
+    }
+  });
+
+  // ==========================
+  // Remove Row
+  // ==========================
+  $(document).on("click", ".remove-row", function () {
+    $(this).closest("tr").remove();
+  });
+
+  // ==========================
+  // Collect Items
+  // ==========================
+  function collectItems() {
+    let items = [];
+
+    $("#table-body tr").each(function () {
+      let row = $(this);
+
+      items.push({
+        product_code: row.find('[name="product_code"]').val(),
+
+        product_description: row.find('[name="product_description"]').val(),
+
+        warehouse: row.find('[name="warehouse"]').val(),
+
+        product_qty: row.find('[name="product_qty"]').val(),
+
+        product_unit: row.find('[name="product_unit"]').val(),
+
+        product_price: row.find('[name="product_price"]').val(),
+
+        product_amount: row.find('[name="product_amount"]').val(),
+
+        percentage_discount: row.find('[name="percentage_discount"]').val(),
+
+        discount: row.find('[name="discount"]').val(),
+
+        gross_amount: row.find('[name="gross_amount"]').val(),
+      });
+    });
+
+    return items;
+  }
+
+  console.log($("#table-body").html());
+  console.log($("#table-body tr").length);
+
+  // ==========================
+  // Build Parent Object
+  // ==========================
+  function buildPurchaseObject() {
+    return {
+      doc_code: $("#doc_code").val(),
+
+      doc_year: $("#doc_year").val(),
+
+      doc_num: $("#doc_num").val(),
+
+      doc_date: $("#doc_date").val(),
+
+      supplier_name: $("#supplier_select").val(),
+
+      supplier_invoice: $("#supplier_invoice").val(),
+
+      currency: $("#currency").val(),
+
+      credit_fercility: $("#credit_fercility").val(),
+
+      address: $("#supplier_address").val(),
+
+      project: $("#project").val(),
+
+      items: collectItems(),
+    };
+  }
+
+  // ==========================
+  // CREATE PURCHASE
+  // ==========================
+  $("#submitBtn").click(function (e) {
+    e.preventDefault();
+
+    let purchase = buildPurchaseObject();
+
+    $.ajax({
+      url: "/savepurchase/",
+
+      type: "POST",
+
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+
+      contentType: "application/json",
+
+      data: JSON.stringify(purchase),
+
+      success: function (response) {
+        alert(response.message);
+      },
+
+      error: function (xhr) {
+        console.log(xhr.responseText);
+      },
+    });
+  });
+
+  // ==========================
+  // UPDATE PURCHASE
+  // ==========================
+  $("#submitBtnUpdate").click(function (e) {
+    e.preventDefault();
+
+    let purchase = buildPurchaseObject();
+
+    let id = $("#document_id").val();
+
+    $.ajax({
+      url: `/purchase/update/${id}/`,
+
+      type: "POST",
+
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+
+      contentType: "application/json",
+
+      data: JSON.stringify(purchase),
+
+      success: function (response) {
+        alert(response.message);
+      },
+
+      error: function (xhr) {
+        console.log(xhr.responseText);
+      },
+    });
+  });
 });
-
-
-
-

@@ -45,32 +45,31 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Invoice</th>
+                            <th>Procuct Code</th>
+                            <th>Procuct Name</th>
                             <th>Date</th>
                             <th>Supplier</th>
-                            <th>Currency</th>
-                            <th>Goross Amount</th>
                             <th width="180">Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        {% for order in orders %}
+                        {% for product in products %}
 
                         <tr>
 
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ order.doc_code }}/{{ order.doc_year }}/{{ order.doc_num}}</td>
-                            <td>{{ order.created_at|date:"m/d/Y" }}</td>
-                            <td>{{ order.supplier_name }}</td>
-                            <td>{{ order.currency }}</td>
-                            <td>{{ order.gross_amount }}</td>
+                            <td>{{ product.product_code}}</td>
+                            <td>{{product.product_name}}</td>
+                            <td>{{product.created_at}}</td>
+                            <td>{{product.supplier}}</td>
+                           
 
                             <td>
                                 <div class="toolbar d-flex justify-content-between">
 
-                                    <a href="{% url 'order_view' order.id %}" class="btn btn-success btn-sm btn-action">
+                                    <a href="{% url 'order_view' product.id %}" class="btn btn-success btn-sm btn-action">
                                         View
                                     </a>
 
@@ -79,7 +78,7 @@
                                         Delete
                                     </button>
 
-                                    <a href="{% url 'update_purchase' order.id %}"
+                                    <a href="{% url 'update_purchase' product.id %}"
                                         class="btn btn-warning btn-sm btn-action">
                                         Edit
                                     </a>

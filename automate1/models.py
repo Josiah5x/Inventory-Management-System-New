@@ -26,7 +26,7 @@ class Vat(models.Model):
 
 
 class Currency(models.Model):
-    code = models.CharField(max_length=3, unique=True)      # NGN, USD
+    code = models.CharField(max_length=10)      # NGN, USD
     name = models.CharField(max_length=50)
 
     def __str__(self):

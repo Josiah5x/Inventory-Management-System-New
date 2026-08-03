@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_or_404
-import json
+import json, traceback
+from decimal import Decimal
 from datetime import datetime
 from django.db import transaction
 from django.contrib import messages
@@ -80,13 +81,36 @@ def Purchase_list(request):
     # return render(request, "purchase_list.html", context)
 
 def Product_List(request):
-    orders = OrderDocument.objects.all().order_by("-id")
-    # return render(request, "orders.html", {"orders": orders})
-    return render(request, "product_list.html", {"orders": orders})
+    products = Product.objects.all().order_by("-id")
+    return render(request, "product_list.html", {"products": products})
+
+
+
+def product_json(request):
+    products = Product.objects.all()
+
+    data = []
+
+    for p in products:
+        data.append({
+            "id": p.id,
+            "product_code": p.product_code,
+            "product_name": p.product_name,
+            "description": p.description,
+            "unit": p.unit,
+            "price": float(p.selling_price or 0),
+        })
+
+    return JsonResponse(data, safe=False)
+
+
 
 def Update_Purchase(request, pk):
     if request.method == "GET":
         order = get_object_or_404(OrderDocument, pk=pk)
+        order.currency = int(order.currency)
+        order.credit_fercility = int(order.credit_fercility)
+        order.supplier_name = int(order.supplier_name)
         current_time = datetime.now()
 
         # 2. Extract just the year as an integer
@@ -250,6 +274,11 @@ def product_create(request):
     return render(request, "product_form2.html", context)
 
 
+def to_decimal(value):
+    if value in (None, "", " "):
+        return Decimal("0")
+    return Decimal(str(value).replace(",", ""))
+
 @ensure_csrf_cookie
 def save_purchase(request):
     print("POST Data:", request.body)
@@ -263,11 +292,12 @@ def save_purchase(request):
                     doc_code=data.get("doc_code"),
                     doc_year=data.get("doc_year"),
                     doc_num=data.get("doc_num"),
+                    doc_date=data.get("doc_date"),
                     supplier_name=data.get("supplier_name"),
                     supplier_invoice=data.get("supplier_invoice"),
                     currency=data.get("currency"),
                     credit_fercility=data.get("credit_fercility"),
-                    address=data.get("supplier_address"),
+                    address=data.get("address"),
                     project=data.get("project"),
                 )
 
@@ -276,15 +306,15 @@ def save_purchase(request):
                     OrderItem.objects.create(
                         document=document,
                         product_code=item.get("product_code"),
-                        product_description=item.get("product_Description"),
-                        warehouse=item.get("product_warehouse"),
+                        product_description=item.get("product_description"),
+                        warehouse=item.get("warehouse"),
                         product_qty=item.get("product_qty"),
                         product_unit=item.get("product_unit"),
-                        product_price=item.get("product_price"),
-                        product_amount=item.get("product_amount"),
-                        percentage_discount=item.get("percentage_discount"),
-                        discount=item.get("discount"),
-                        gross_amount=item.get("gross_amount"),
+                        product_price=to_decimal(item.get("product_price")),
+                        product_amount=to_decimal(item.get("product_amount")),
+                        percentage_discount=to_decimal(item.get("percentage_discount")),
+                        discount=to_decimal(item.get("discount")),
+                        gross_amount=to_decimal(item.get("gross_amount")),
                     )
 
             return JsonResponse(
@@ -292,7 +322,10 @@ def save_purchase(request):
             )
 
         except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+            traceback.print_exc()
+            print("ERROR:", e)
+
+            return JsonResponse({"status": "error","message": str(e)}, status=400)
 
     return JsonResponse(
         {"status": "error", "message": "Method not allowed"}, status=405

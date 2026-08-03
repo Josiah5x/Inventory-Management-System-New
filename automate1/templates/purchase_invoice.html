@@ -69,6 +69,42 @@
         justify-content: center;
         font-size: 28px;
     }
+
+    .product-code-col {
+    min-width: 280px;
+}
+
+.description-col {
+    min-width: 200px;
+}
+
+    .table-container{
+    max-height:500px;      /* Adjust the height as needed */
+    overflow-y:auto;
+    overflow-x:auto;
+    border:1px solid #dee2e6;
+    border-radius:8px;
+}
+
+.table-container table{
+    min-width:1400px;      /* Keeps all columns visible with horizontal scrolling */
+    margin-bottom:0;
+}
+
+.table-container thead th{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:#212529;
+    color:#fff;
+    white-space:nowrap;
+}
+
+.table-container td,
+.table-container th{
+    white-space:nowrap;
+    vertical-align:middle;
+}
 </style>
 <div class="toolbar d-flex justify-content-between">
     <div>
@@ -94,24 +130,33 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Invoice*</span>
-                            <div class="col"><input class="form-control" name="doc_code" value="PU"></div>
-                            <div class="col"><input class="form-control" name="doc_year" value="{{current_year}}"></div>
-                            <div class="col"><input class="form-control" name="doc_num"></div>
+
+                            <div class="col">
+                                <input class="form-control" id="doc_code" name="doc_code" value="PU">
+                            </div>
+
+                            <div class="col">
+                                <input class="form-control" id="doc_year" name="doc_year" value="{{ current_year }}">
+                            </div>
+
+                            <div class="col">
+                                <input class="form-control" id="doc_num" name="doc_num">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Supplier Invoice</span>
-                            <input class="form-control" name="supplier_invoice" value="S-2603094">
+                            <input class="form-control" name="supplier_invoice" id="supplier_invoice" value="S-2603094">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Date*</span>
-                            <input class="form-control text-center" type="date" name="date">
+                            <input class="form-control text-center" type="date" name="doc_date" id="doc_date">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Currency *</span>
                             <select class="form-select" id="currency" name="currency">
@@ -123,11 +168,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Supplier *</span>
-                            <select class="form-select" id="supplier_select" name="supplier_name">
-                                <option value="--None--">--None--</option>
+                            <select class="form-select form-control" id="supplier_select" name="supplier_name">
                                 {% for supplier in suppliers %}
                                 <option value="{{supplier.id}}" data-address="{{supplier.address}}">{{supplier.name}}
                                 </option>
@@ -135,10 +179,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select" name="credit_f" id="credit_f">
+                            <select class="form-select" id="credit_fercility" name="credit_fercility">
                                 <option value="--None--">--None--</option>
                                 {% for credit_f in creditfacility %}
                                 <option value="{{credit_f.id}}">{{credit_f.name}}</option>
@@ -157,7 +201,7 @@
                             <div class="input-group">
                                 <span class="col-md-4 col-form-label">Project *</span>
                                 <!-- <label>Project</label> -->
-                                <input class="form-control" name="project">
+                                <input class="form-control" name="project" id="project">
                             </div>
                         </div>
                     </div>
@@ -172,7 +216,13 @@
                     <hr>
                     <div class="d-flex justify-content-between align-items-center">
                         <div style="font-size:25px;font-weight:700">NGN</div>
-                        <div class="total">129,000.00</div>
+                        <div class="total">
+                                    <input type="text"
+                                id="invoice_total"
+                                class="form-control text-end fw-bold"
+                                readonly
+                                value="0.00">
+                        </div>
                     </div>
                     <p class="text-end text-primary">Unpaid 129,000.00</p>
                 </div>
@@ -183,60 +233,38 @@
         </div>
         <div id="response-message"></div>
 
-        <div class="overflow-scroll">
-        <table class="table table-hover mt-4">
-            <thead>
-                <tr>
-                    <th style="width:40px">
-                        <button type="button" class="btn btn-dark" id="add-row">
-                            +
-                        </button>
-                    </th>
-                    <th>Product</th>
-                    <th>Description</th>
-                    <th>Warehouse</th>
-                    <th>Qty</th>
-                    <th>Unit</th>
-                    <th>Unit Price</th>
-                    <th>Amount</th>
-                    <th>Disc%</th>
-                    <th>Discount</th>
-                    <th>Gross Amount</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <tr>
-                    <td><input class="form-check-input" type="checkbox" id="check1" name="option1" value="something"
-                            checked style="width: 25px; height: 25px""></td>
-                    <td><input type=" text" class="form-control" name="code" value="4i4564 Cmp-Fuel Pump"></td>
-                    <td><input type="text" class="form-control" name="description"></td>
-                    <td><input type="text" class="form-control" value="Kuje Store" name="warehouse">
-                    </td>
-                    <td><input type="text" class="form-control" value="1.000" name="qty"></td>
-                    <td>
-                        <select class="form-control" name="product_unit" id="unit" <option value=""></option>
-                            <option value="PC">PC</option>
-                            <option value="LIT">LIT</option>
-                            <option value="SET">SET</option>
-                            <option value="GALLON">GALLON</option>
-                            <option value="MTR">MTR</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="form-control" name="unit-price" value="120,000.00">
-                    </td>
-                    <td><input type="text" class="form-control" name="amount" disabled></td>
-                    <td><input type="text" class="form-control" name="percentage-discount" value="%0">
-                    </td>
-                    <td><input type="text" class="form-control" name="discount" value="120,000.00">
-                    </td>
-                    <td><input type="text" class="form-control" name="gross-amount" value="120,000.00" disabled>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+         <div class="d-flex justify-content-between align-items-center mb-2">
+            <button type="button" class="btn btn-dark" id="add-row">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            </div>
+        <div class="table-container">
+    <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                          
+                        </th>
+                        <th class="product-code-col">Product</th>
+                        <th class="description-col">Description</th>
+                        <th>Warehouse</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Unit Price</th>
+                        <th>Amount</th>
+                        <th>Disc%</th>
+                        <th>Discount</th>
+                        <th>Gross Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+
+                </tbody>
+            </table>
+        </div>
     </div>
     </div>
 </form>
+
 
 {% endblock content %}
