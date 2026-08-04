@@ -11,6 +11,7 @@ urlpatterns = [
     path("product", views.Product_Form, name="product"),
     path("product_create", views.product_create, name="product_create"),
     path("sale", views.Sale, name="sale"),
+    path("invoice", views.Invoice, name="invoice"),
     path("products/json/", views.product_json, name="product_json"),
     path("savepurchase/", views.save_purchase, name="save_purchase"),
     path("purchase/update/<int:pk>/", views.Update_Purchase, name="update_purchase"),

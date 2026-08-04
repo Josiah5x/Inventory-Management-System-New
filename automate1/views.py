@@ -58,6 +58,8 @@ def Product_Form(request):
 
 def Sale(request):
     return render(request, "sale.html")
+def Invoice(request):
+    return render(request, "invoice.html")
 
 def Supplier_form(request):
     supplier = Supplier.objects.all()
