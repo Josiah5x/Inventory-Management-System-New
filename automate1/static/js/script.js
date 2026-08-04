@@ -30,12 +30,10 @@ $(document).ready(function () {
        <tr>
                 <td></td>
 
-                <td style="position:relative; min-width:300px;">
-                <input type="text"
-                      class="form-control product-code"
-                      name="product_code"
-                      autocomplete="off">
-                    <div class="product-results"></div>
+                <td style="min-width:300px;">
+                    <select class="form-control product-select" name="product_code">
+                        <option value="">-- Select Product --</option>
+                    </select>
                 </td>
 
                 <td>
@@ -84,6 +82,22 @@ $(document).ready(function () {
         `;
 
     $("#table-body").append(newRow);
+    let select = $("#table-body tr:last .product-select");
+
+    select.append('<option value="">Select Product</option>');
+
+    products.forEach(function (product) {
+      select.append(`
+        <option value="${product.id}">
+            ${product.product_code} - ${product.product_name}
+        </option>
+    `);
+    });
+
+    select.select2({
+      width: "100%",
+      placeholder: "Search Product...",
+    });
   });
 
   // Auto calculate whenever Qty, Price or Discount changes
@@ -146,69 +160,56 @@ $(document).ready(function () {
   let products = [];
 
   fetch("/products/json/")
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((data) => {
       products = data;
-      console.log("Products Loaded:", products);
-    })
-    .catch((error) => {
-      console.error("Error loading products:", error);
+
+      loadProducts();
     });
+
+  function loadProducts() {
+    $(".product-select").each(function () {
+      let select = $(this);
+
+      select.empty();
+
+      select.append('<option value="">Select Product</option>');
+
+      products.forEach(function (product) {
+        select.append(`
+                <option value="${product.id}">
+                    ${product.product_code} - ${product.product_name}
+                </option>
+            `);
+      });
+
+      // Make it searchable
+      select.select2({
+        width: "100%",
+        placeholder: "Search Product...",
+        allowClear: true,
+      });
+    });
+  }
 
   // ==========================
   // Auto Fill Product Details
   // ==========================
  
-  $(document).on("keyup", ".product-code", function () {
+$(document).on("change", ".product-select", function () {
+  let row = $(this).closest("tr");
 
-    let row = $(this).closest("tr");
-    let keyword = $(this).val().toLowerCase().trim();
+  let id = $(this).val();
 
-    let resultBox = row.find(".product-results");
+  let product = products.find((p) => p.id == id);
 
-    resultBox.empty();
+  if (!product) return;
 
-    if (keyword.length === 0) {
-        resultBox.hide();
-        return;
-    }
+  row.find("[name='product_description']").val(product.description);
+  row.find("[name='product_unit']").val(product.unit);
+  row.find("[name='product_price']").val(product.price);
 
-    let matches = products.filter(p =>
-
-        (p.product_code &&
-         p.product_code.toLowerCase().includes(keyword))
-
-        ||
-
-        (p.product_name &&
-         p.product_name.toLowerCase().includes(keyword))
-
-        ||
-
-        (p.description &&
-         p.description.toLowerCase().includes(keyword))
-
-    );
-
-    if(matches.length === 0){
-        resultBox.hide();
-        return;
-    }
-
-    matches.forEach(function(product){
-
-        resultBox.append(`
-            <div class="product-item"
-                 data-id="${product.id}">
-                <strong>${product.product_code}</strong><br>
-                ${product.product_name}
-            </div>
-        `);
-
-    });
-
-    resultBox.show();
-
+  row.find("[name='product_qty']").trigger("input");
 });
 
 $(document).on("click", ".product-item", function(){
