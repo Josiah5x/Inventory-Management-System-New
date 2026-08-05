@@ -54,8 +54,8 @@
 
     .form-control,
     .form-select {
-        background: #f2f2f2;
-        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        background: #fff;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 0.4px;
     }
 
     .add-btn {
@@ -119,8 +119,70 @@
     display:none;
 }
 
-.product-select{
-    height: 80px;
+/* Main Select Box */
+.product-selection{
+    height:42px !important;
+    border:2px solid #dfe6e9 !important;
+    border-radius:8px !important;
+    background:#ffffff !important;
+    transition:0.3s;
+    display:flex !important;
+    align-items:center;
+}
+
+/* Focus */
+.select2-container--focus .product-selection{
+    border-color:#0d6efd !important;
+    box-shadow:0 0 0 .2rem rgba(13,110,253,.25);
+}
+
+/* Selected Text */
+.product-selection .select2-selection__rendered{
+    line-height:38px !important;
+    padding-left:10px !important;
+    color:#212529;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* Arrow */
+.product-selection .select2-selection__arrow{
+    height:40px !important;
+    right:8px !important;
+}
+
+/* Search Box */
+.select2-search__field{
+    height:38px;
+    border-radius:6px !important;
+    border:1px solid #dee2e6 !important;
+    padding:8px 12px !important;
+    font-size:14px;
+}
+
+/* Dropdown */
+.product-dropdown{
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid #dee2e6;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+/* Product Item */
+.product-dropdown .select2-results__option{
+    padding:12px;
+    border-bottom:1px solid #f1f1f1;
+}
+
+/* Hover */
+.product-dropdown .select2-results__option--highlighted{
+    background:#0d6efd !important;
+    color:#fff !important;
+}
+
+/* Scroll Bar */
+.product-dropdown .select2-results{
+    max-height:300px;
 }
 
 .product-item{
@@ -144,6 +206,30 @@
     </div>
     <div><i class="bi bi-paperclip fs-4"></i> <i class="bi bi-bell fs-4 ms-4"></i></div>
 </div>
+
+
+<!-- MODAL SECTION -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove this row?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteRow">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <form id="dataForm">
     {% csrf_token %}
     <div class="container-fluid mt-1">
@@ -260,28 +346,41 @@
         </div>
         <div id="response-message"></div>
 
-         <div class="d-flex justify-content-between align-items-center mb-2">
+         <!-- <div class="d-flex justify-content-between align-items-center mb-2">
             <button type="button" class="btn btn-dark" id="add-row">
                 <i class="bi bi-plus-circle"></i>
             </button>
-            </div>
+            </div> -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+        <!-- Left Button -->
+        <button type="button" class="btn btn-primary" id="add-row">
+            <i class="bi bi-plus-lg"></i>Add
+        </button>
+
+        <!-- Right Button -->
+        <!-- <button type="button" class="btn btn-danger" id="delete-row">
+            <i class="bi bi-trash"></i> Delete Selected
+        </button> -->
+
+        </div>
         <div class="table-container">
-    <table class="table table-hover table-bordered">
+        <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>
-                          
+                        
                         </th>
                         <th class="product-code-col">Product</th>
                         <th class="description-col">Description</th>
-                        <th>Warehouse</th>
-                        <th>Qty</th>
-                        <th>Unit</th>
-                        <th>Unit Price</th>
-                        <th>Amount</th>
-                        <th>Disc%</th>
-                        <th>Discount</th>
-                        <th>Gross Amount</th>
+                        <th style="min-width: 100px;">Warehouse</th>
+                        <th style="min-width: 80px;">Qty</th>
+                        <th style="min-width: 80px;">Unit</th>
+                        <th style="min-width: 130px;">Unit Price</th>
+                        <th style="min-width: 120px;">Amount</th>
+                        <th style="min-width: 80px;">Disc%</th>
+                        <th style="min-width: 80px;">Discount</th>
+                        <th style="min-width: 80px;">Gross Amount</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">

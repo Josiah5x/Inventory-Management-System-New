@@ -22,16 +22,25 @@ $(document).ready(function () {
     return cookieValue;
   }
 
+  
+//       <button type="button" class="btn btn-danger remove-row" data-bs-toggle="modal" data-bs-target="#confirmModal" id="delete-row">
+//       <i class="bi bi-trash"></i>
+//   </button>
   // ==========================
   // Add Row
   // ==========================
   $("#add-row").click(function () {
     let newRow = `
-       <tr>
-                <td></td>
+       <tr>         
+                <td>
+                   <button type="button" class="btn btn-danger" id="delete-row">
+                      <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              
 
                 <td style="min-width:300px;">
-                    <select class="form-control product-select" name="product_code">
+                    <select class="product-select" name="product_code">
                         <option value="">-- Select Product --</option>
                     </select>
                 </td>
@@ -52,10 +61,10 @@ $(document).ready(function () {
                     <select class="form-control" name="product_unit">
                         <option value=""></option>
                         <option>Pcs</option>
-                        <option>Lits</option>
-                        <option>SET</option>
-                        <option>Gallons</option>
-                        <option>Meters</option>
+                        <option>Lts</option>
+                        <option>Sets</option>
+                        <option>Gals</option>
+                        <option>Mtrs</option>
                     </select>
                 </td>
 
@@ -195,30 +204,29 @@ $(document).ready(function () {
   // ==========================
   // Auto Fill Product Details
   // ==========================
- 
-$(document).on("change", ".product-select", function () {
-  let row = $(this).closest("tr");
 
-  let id = $(this).val();
+  $(document).on("change", ".product-select", function () {
+    let row = $(this).closest("tr");
 
-  let product = products.find((p) => p.id == id);
+    let id = $(this).val();
 
-  if (!product) return;
+    let product = products.find((p) => p.id == id);
 
-  row.find("[name='product_description']").val(product.description);
-  row.find("[name='product_unit']").val(product.unit);
-  row.find("[name='product_price']").val(product.price);
+    if (!product) return;
 
-  row.find("[name='product_qty']").trigger("input");
-});
+    row.find("[name='product_description']").val(product.description);
+    row.find("[name='product_unit']").val(product.unit);
+    row.find("[name='product_price']").val(product.price);
 
-$(document).on("click", ".product-item", function(){
+    row.find("[name='product_qty']").trigger("input");
+  });
 
+  $(document).on("click", ".product-item", function () {
     let row = $(this).closest("tr");
 
     let id = $(this).data("id");
 
-    let product = products.find(p => p.id == id);
+    let product = products.find((p) => p.id == id);
 
     row.find("[name='product_code']").val(product.product_code);
     row.find("[name='product_description']").val(product.description);
@@ -229,15 +237,32 @@ $(document).on("click", ".product-item", function(){
 
     // Recalculate totals
     row.find("[name='product_qty']").trigger("input");
-
-});
+  });
 
   // ==========================
   // Remove Row
   // ==========================
-  $(document).on("click", ".remove-row", function () {
-    $(this).closest("tr").remove();
-  });
+  // Variable to store the row slated for deletion
+ let rowToDelete = null;
+
+ $(document).on("click", ".remove-row", function () {
+   rowToDelete = $(this).closest("tr");
+ });
+
+ $("#confirmDeleteRow").on("click", function () {
+   if (rowToDelete) {
+     rowToDelete.remove();
+     rowToDelete = null;
+   }
+
+   // 1. Hide the modal natively
+   $("#confirmModal").modal("hide");
+
+   // 2. FORCE-CLEANUP: Kill the stuck dark backdrop and unlock the screen
+   $(".modal-backdrop").remove();
+   $("body").removeClass("modal-open").css("overflow", "");
+ });
+
 
   // ==========================
   // Collect Items

@@ -1,0 +1,145 @@
+<!-- Static file loader -->
+{% load static %} {% load custom_tags %}
+<!-- the content block-->
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Report Card</title>
+    <style>
+      .report-card {
+        border: 1px solid #ccc;
+        padding: 20px;
+        width: 90%;
+        margin: auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header img {
+        height: 80px;
+      }
+      .header h1,
+      .header h2 {
+        margin: 0;
+      }
+      .header h1 {
+        font-size: 24px;
+        color: #333;
+      }
+      .header h2 {
+        font-size: 20px;
+        margin: 5px 0;
+        color: #666;
+      }
+      .header p {
+        margin: 5px 0;
+        color: #888;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #444;
+        margin-bottom: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      table th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+      }
+      .comments-section p {
+        margin: 5px 0;
+      }
+      .footer {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+      }
+      .important {
+        color: red;
+        font-weight: bold;
+      }
+      .head-one {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .flex-container {
+        display: flex;
+        align-items: stretch;
+        background-color: #f1f1f1;
+      }
+
+      .flex-container > div {
+        background-color: DodgerBlue;
+        color: white;
+        margin: 10px;
+        text-align: center;
+        line-height: 75px;
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-card">
+      <!-- HEADER SECTION -->
+      <div class="header">
+        <!-- <img src="logo.png" alt="School Logo" /> -->
+        <h1>GOMAK TECHNICAL VENTURE</h1>
+        <p>SPECIALISE ON FORK LIFT, GEN-SET, EARTHMOVING EQUIPMENTS</p>
+        <p>SPECIALISED INDUSTRIAL SPARES & AUTO SPARE PARTS</p>
+        <hr />
+      </div>
+
+      <!-- ACADEMIC PERFORMANCE SECTION -->
+      <div class="section">
+        <div class="flex-container">
+          <div style="flex-grow: 5">1</div>
+          <div style="flex-grow: 5"><p>INVOICE</p></div>
+          <div style="flex-grow: 5">3</div>
+        </div>
+        <div class="section-title">Academic Performance</div>
+        <table>
+          <tr>
+            <th>S/N</th>
+            <th>PART NO</th>
+            <th>DESCRIPTION</th>
+            <th>QUANTITY</th>
+            <th>UNIT</th>
+            <th>RATE</th>
+            <th>PRICE</th>
+            <th>KOBO</th>
+          </tr>
+          {% for i in len %}
+          <tr>
+            <td>1</td>
+            <td>{{ data|get_item:i|get_item:'product_number' }}</td>
+            <td>{{ data|get_item:i|get_item:'product_discription' }}</td>
+            <td>{{ data|get_item:i|get_item:'product_quantity' }}</td>
+            <td>{{ data|get_item:i|get_item:'product_unit' }}</td>
+            <td>{{ data|get_item:i|get_item:'product_rate' }}</td>
+            <td>{{ data|get_item:i|get_item:'product_price' }}</td>
+            <td>00</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>

@@ -1,178 +1,193 @@
-{% extends 'base.html'%}
 <!-- Static file loader -->
-{% load static %} {% block content %}
+{% load static %} {% load custom_tags %} {% block content %}
+
+  <link href="{% static 'bootstrap-5.3.8-dist/css/bootstrap.min.css'%}" rel="stylesheet"/>
+
+
+<link href="{% static 'css/invoice_style.css'%}" rel="stylesheet" />
 <!-- The Modal -->
 <div class="invoice">
+  <!-- Header -->
 
-    <!-- Header -->
+  <div class="header">
+    <div class="d-flex justify-content-center align-items-center">
+      <!-- <div class="circle"></div> -->
 
-    <div class="header">
+      <div>
+        <h1 class="fw-bold">GOMAK TECHNICAL VENTURE</h1>
 
-        <div class="logo">
-            <div class="circle"></div>
+        <p class="text-center fw-bold lh-1">
+          SPECIALISE ON FORK LIFT, GEN-SET, EARTHMOVING EQUIPMENTS
+        </p>
 
-            <div>
+        <p class="text-center fw-bold lh-1">
+          SPECIALISED INDUSTRIAL SPARES & AUTO SPARE PARTS
+        </p>
+      </div>
+    </div>
+  </div>
 
-                <h1>GOMAK TECHNICAL VENTURE</h1>
+<div class="footer"></div>
+  <!-- Top Section -->
 
-                <p>SPECIALISE ON FORK LIFT, GEN-SET, EARTHMOVING EQUIPMENTS</p>
+  <div class="top lh-1">
+    <div class="customer lh-1">
+      <p>Invoice to :</p>
 
-                <p>SPECIALISED INDUSTRIAL SPARES & AUTO SPARE PARTS</p>
+      <h2>Ketut Susilo</h2>
 
-            </div>
+      <p>123-456-7890</p>
 
-        </div>
+      <p>hello@reallygreatsite.com</p>
 
+      <p>123 Anywhere St., Any City</p>
     </div>
 
-    <hr>
-
-    <!-- Top Section -->
-
-    <div class="top">
-
-        <div class="customer">
-
-            <p>Invoice to :</p>
-
-            <h2>Ketut Susilo</h2>
-
-            <p>123-456-7890</p>
-
-            <p>hello@reallygreatsite.com</p>
-
-            <p>123 Anywhere St., Any City</p>
-
-        </div>
-
-        <div class="title">
-
-            <h1>INVOICE</h1>
-
-        </div>
-
-        <div class="company-info">
-
-            <p>07026023234</p>
-
-            <p>08057275306</p>
-
-            <p>08060253960</p>
-
-            <p>EMAIL : CHAMIEL_N2E@YAHOO.COM</p>
-
-            <br>
-
-            <h3>Invoice No : 12345</h3>
-
-            <p>25 June 2022</p>
-
-        </div>
-
+    <div class="title lh-1">
+      <h1 class="text-center fw-bold">INVOICE</h1>
     </div>
 
-    <!-- Table -->
+    <div class="company-info lh-1">
+      <p>07026023234</p>
+
+      <p>08057275306</p>
+
+      <p>08060253960</p>
+
+      <p>EMAIL : CHAMIEL_N2E@YAHOO.COM</p>
+
+      <br />
+
+      <h3>Invoice No : 12345</h3>
+
+      <p>25 June 2022</p>
+    </div>
+  </div>
+
+  <!-- Table -->
+<div class="container-fluid mt-0 pt-0">
 
     <table>
-
         <thead>
-
-        <tr>
-
+            <tr>
+                <th>S/N</th>
+                <th>PART NO</th>
+                <th>DESCRIPTION</th>
+                <th>QUANTITY</th>
+                <th>UNIT</th>
+                <th>RATE</th>
+                <th>PRICE</th>
+                <th>KOBO</th>
+            </tr>
+            
+      <!-- <tr>
+          
             <th>No</th>
 
             <th>Description</th>
-
+            
             <th>Qty</th>
-
+            
             <th>Price</th>
 
             <th>Total</th>
 
-        </tr>
+        </tr> -->
+    </thead>
 
-        </thead>
+    <tbody>
+      <tr>
+          <td>1</td>
+          <td>Logo Design</td>
+          <td>5</td>
+          <td>$100</td>
+          <td>$500</td>
+          <td>$500</td>
+          <td>$500</td>
+        <td>$500</td>
+    </tr>
+        <td>1</td>
+        <td>Logo Design</td>
+        <td>5</td>
+        <td>$100</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+    </tr>
+        <td>1</td>
+        <td>Logo Design</td>
+        <td>5</td>
+        <td>$100</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+    </tr>
+    <td>1</td>
+    <td>Logo Design</td>
+    <td>5</td>
+        <td>$100</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+        <td>$500</td>
+      </tr>
+      
+    </tbody>
+</table>
+</div>
 
-        <tbody>
+  <div class="middle">
+    <h2>Thank you for business with us!</h2>
 
-        <tr><td>1</td><td>Logo Design</td><td>5</td><td>$100</td><td>$500</td></tr>
-        <tr><td>2</td><td>Website Design</td><td>2</td><td>$800</td><td>$1600</td></tr>
-        <tr><td>3</td><td>Brand Design</td><td>3</td><td>$300</td><td>$900</td></tr>
-        <tr><td>4</td><td>Banner Design</td><td>2</td><td>$300</td><td>$600</td></tr>
-        <tr><td>5</td><td>Flyer Design</td><td>2</td><td>$400</td><td>$800</td></tr>
-        <tr><td>6</td><td>Social Media Template</td><td>10</td><td>$50</td><td>$500</td></tr>
-        <tr><td>7</td><td>Name Card</td><td>15</td><td>$25</td><td>$750</td></tr>
-        <tr><td>8</td><td>Web Developer</td><td>2</td><td>$1000</td><td>$2000</td></tr>
+    <div class="totals">
+      <p><span>Sub Total :</span> $7,650</p>
 
-        </tbody>
+      <p><span>Tax 15% :</span> $1,148</p>
 
-    </table>
+      <div class="grand">
+        <span>GRAND TOTAL :</span>
 
-    <div class="middle">
+        <strong>$8,798</strong>
+      </div>
+    </div>
+  </div>
 
-        <h2>Thank you for business with us!</h2>
+  <div class="bottom">
+    <div class="payment">
+      <h3>PAYMENT METHOD</h3>
 
-        <div class="totals">
+      <p>Bank Name : Borcelle</p>
 
-            <p><span>Sub Total :</span> $7,650</p>
+      <p>Account Number : 123-456-7890</p>
 
-            <p><span>Tax 15% :</span> $1,148</p>
+      <hr />
 
-            <div class="grand">
+      <h3>Term and Conditions</h3>
 
-                <span>GRAND TOTAL :</span>
-
-                <strong>$8,798</strong>
-
-            </div>
-
-        </div>
-
+      <p>
+        Please send payment within 30 days of receiving this invoice. There will
+        be 10% interest charge per month on late invoice.
+      </p>
     </div>
 
-    <div class="bottom">
+    <div class="signature">
+      <div class="sign">Henrietta Mitchell</div>
 
-        <div class="payment">
+      <h2>Henrietta Mitchell</h2>
 
-            <h3>PAYMENT METHOD</h3>
-
-            <p>Bank Name : Borcelle</p>
-
-            <p>Account Number : 123-456-7890</p>
-
-            <hr>
-
-            <h3>Term and Conditions</h3>
-
-            <p>
-                Please send payment within 30 days of receiving this invoice.
-                There will be 10% interest charge per month on late invoice.
-            </p>
-
-        </div>
-
-        <div class="signature">
-
-            <div class="sign">Henrietta Mitchell</div>
-
-            <h2>Henrietta Mitchell</h2>
-
-            <p>Administrator</p>
-
-        </div>
-
+      <p>Administrator</p>
     </div>
+  </div>
 
-    <div class="footer">
+  <div class="footer">
+    <div>☎ 123-456-7890</div>
 
-        <div>☎ 123-456-7890</div>
+    <div>✉ hello@reallygreatsite.com</div>
 
-        <div>✉ hello@reallygreatsite.com</div>
-
-        <div>📍123 Anywhere St., Any City</div>
-
-    </div>
-
+    <div>📍123 Anywhere St., Any City</div>
+  </div>
 </div>
 
 {% endblock content %}
