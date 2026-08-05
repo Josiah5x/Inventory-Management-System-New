@@ -125,6 +125,8 @@ def Update_Purchase(request, pk):
             request,
             "update_purchase.html",
             {
+                "order": order,
+                "orderitems": order.items.all(),   # All related OrderItems
                 "suppliers": suppliers,
                 "creditfacility": creditfacility,
                 "currencies": currencies,

@@ -33,7 +33,7 @@ $(document).ready(function () {
     let newRow = `
        <tr>         
                 <td>
-                   <button type="button" class="btn btn-danger" id="delete-row">
+                   <button type="button"  class="btn btn-danger remove-row" data-bs-toggle="modal" data-bs-target="#confirmModal" id="delete-row">
                       <i class="bi bi-trash"></i>
                   </button>
                 </td>
@@ -91,6 +91,7 @@ $(document).ready(function () {
         `;
 
     $("#table-body").append(newRow);
+    
     let select = $("#table-body tr:last .product-select");
 
     select.append('<option value="">Select Product</option>');
