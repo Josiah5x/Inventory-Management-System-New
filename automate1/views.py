@@ -106,6 +106,34 @@ def product_json(request):
 
     return JsonResponse(data, safe=False)
 
+def supplier_json(request):
+    
+    data = list(
+        Supplier.objects.values(
+            "id",
+            "name"
+        )
+    )
+    return JsonResponse(data, safe=False)
+
+def currency_json(request):
+    data = list(
+        Currency.objects.values(
+            "id",
+            "name"
+        )
+    )
+    return JsonResponse(data, safe=False)
+
+def facility_json(request):
+    data = list(
+        CreditFacility.objects.values(
+            "id",
+            "name"
+        )
+    )
+    return JsonResponse(data, safe=False)
+
 
 
 def Update_Purchase(request, pk):

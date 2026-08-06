@@ -22,10 +22,11 @@ $(document).ready(function () {
     return cookieValue;
   }
 
-  
-//       <button type="button" class="btn btn-danger remove-row" data-bs-toggle="modal" data-bs-target="#confirmModal" id="delete-row">
-//       <i class="bi bi-trash"></i>
-//   </button>
+
+
+  //       <button type="button" class="btn btn-danger remove-row" data-bs-toggle="modal" data-bs-target="#confirmModal" id="delete-row">
+  //       <i class="bi bi-trash"></i>
+  //   </button>
   // ==========================
   // Add Row
   // ==========================
@@ -40,7 +41,7 @@ $(document).ready(function () {
               
 
                 <td style="min-width:300px;">
-                    <select class="product-select" name="product_code">
+                    <select class="form-select product-select" name="product_code">
                         <option value="">-- Select Product --</option>
                     </select>
                 </td>
@@ -91,7 +92,7 @@ $(document).ready(function () {
         `;
 
     $("#table-body").append(newRow);
-    
+
     let select = $("#table-body tr:last .product-select");
 
     select.append('<option value="">Select Product</option>');
@@ -109,6 +110,182 @@ $(document).ready(function () {
       placeholder: "Search Product...",
     });
   });
+
+
+  // ==========================
+  // Arrays
+  // ==========================
+
+  let suppliers = [];
+  let currencies = [];
+  let facilities = [];
+
+  // ==========================
+  // Load everything
+  // ==========================
+  Promise.all([
+    // fetch("/products/json/").then(res => res.json()),
+    fetch("/suppliers/json/").then(res => res.json()),
+    fetch("/currencies/json/").then(res => res.json()),
+    fetch("/facilities/json/").then(res => res.json())
+  ]).then(([supplierData, currencyData, facilityData]) => {
+
+    // products = productData;
+    suppliers = supplierData;
+    currencies = currencyData;
+    facilities = facilityData;
+
+    // loadProducts();
+    loadSuppliers();
+    loadCurrencies();
+    loadFacilities();
+  });
+
+
+  // SUPPLIER
+  function loadSuppliers() {
+
+    $(".supplier-select").each(function () {
+
+      let select = $(this);
+
+      if (select.hasClass("select2-hidden-accessible")) {
+        select.select2("destroy");
+      }
+
+      select.empty();
+
+      select.append('<option value="">Select Supplier</option>');
+
+      suppliers.forEach(function (supplier) {
+
+        select.append(`
+                <option value="${supplier.id}">
+                    ${supplier.name}
+                </option>
+            `);
+
+      });
+
+      select.select2({
+        width: "83%",
+        placeholder: "Search Supplier",
+        allowClear: true
+      });
+
+    });
+
+  }
+
+  // CURRENCY
+  function loadCurrencies() {
+
+    $(".currency-select").each(function () {
+
+      let select = $(this);
+
+      if (select.hasClass("select2-hidden-accessible")) {
+        select.select2("destroy");
+      }
+
+      select.empty();
+
+      select.append('<option value="">Select Currency</option>');
+
+      currencies.forEach(function (currency) {
+
+        select.append(`
+                <option value="${currency.id}">
+                    ${currency.name}
+                </option>
+            `);
+
+      });
+
+      select.select2({
+        width: "58%",
+        placeholder: "Select Currency",
+        allowClear: true,
+        minimumResultsForSearch: Infinity
+      });
+
+    });
+
+  }
+
+  // FACILITY
+  function loadFacilities() {
+
+    $(".facility-select").each(function () {
+
+      let select = $(this);
+
+      if (select.hasClass("select2-hidden-accessible")) {
+        select.select2("destroy");
+      }
+
+      select.empty();
+
+      select.append('<option value="">Select Credit Facility</option>');
+
+      facilities.forEach(function (facility) {
+
+        select.append(`
+                <option value="${facility.id}">
+                    ${facility.name}
+                </option>
+            `);
+
+      });
+
+      select.select2({
+        width: "58%",
+        placeholder: "Select Credit Facility",
+        allowClear: true,
+        minimumResultsForSearch: Infinity
+      });
+
+    });
+
+  }
+
+  // ==========================
+  // Load Products from Database
+  // ==========================
+  let products = [];
+
+  fetch("/products/json/")
+    .then((res) => res.json())
+    .then((data) => {
+      products = data;
+
+      loadProducts();
+    });
+
+  function loadProducts() {
+    $(".product-select").each(function () {
+      let select = $(this);
+
+      select.empty();
+
+      select.append('<option value="">Select Product</option>');
+
+      products.forEach(function (product) {
+        select.append(`
+                <option value="${product.id}">
+                    ${product.product_code} - ${product.product_name}
+                </option>
+            `);
+      });
+
+      // Make it searchable
+      select.select2({
+        width: "100%",
+        placeholder: "Search Product...",
+        allowClear: true,
+      });
+    });
+  }
 
   // Auto calculate whenever Qty, Price or Discount changes
   $(document).on(
@@ -165,44 +342,6 @@ $(document).ready(function () {
   }
 
   // ==========================
-  // Load Products from Database
-  // ==========================
-  let products = [];
-
-  fetch("/products/json/")
-    .then((res) => res.json())
-    .then((data) => {
-      products = data;
-
-      loadProducts();
-    });
-
-  function loadProducts() {
-    $(".product-select").each(function () {
-      let select = $(this);
-
-      select.empty();
-
-      select.append('<option value="">Select Product</option>');
-
-      products.forEach(function (product) {
-        select.append(`
-                <option value="${product.id}">
-                    ${product.product_code} - ${product.product_name}
-                </option>
-            `);
-      });
-
-      // Make it searchable
-      select.select2({
-        width: "100%",
-        placeholder: "Search Product...",
-        allowClear: true,
-      });
-    });
-  }
-
-  // ==========================
   // Auto Fill Product Details
   // ==========================
 
@@ -244,25 +383,25 @@ $(document).ready(function () {
   // Remove Row
   // ==========================
   // Variable to store the row slated for deletion
- let rowToDelete = null;
+  let rowToDelete = null;
 
- $(document).on("click", ".remove-row", function () {
-   rowToDelete = $(this).closest("tr");
- });
+  $(document).on("click", ".remove-row", function () {
+    rowToDelete = $(this).closest("tr");
+  });
 
- $("#confirmDeleteRow").on("click", function () {
-   if (rowToDelete) {
-     rowToDelete.remove();
-     rowToDelete = null;
-   }
+  $("#confirmDeleteRow").on("click", function () {
+    if (rowToDelete) {
+      rowToDelete.remove();
+      rowToDelete = null;
+    }
 
-   // 1. Hide the modal natively
-   $("#confirmModal").modal("hide");
+    // 1. Hide the modal natively
+    $("#confirmModal").modal("hide");
 
-   // 2. FORCE-CLEANUP: Kill the stuck dark backdrop and unlock the screen
-   $(".modal-backdrop").remove();
-   $("body").removeClass("modal-open").css("overflow", "");
- });
+    // 2. FORCE-CLEANUP: Kill the stuck dark backdrop and unlock the screen
+    $(".modal-backdrop").remove();
+    $("body").removeClass("modal-open").css("overflow", "");
+  });
 
 
   // ==========================

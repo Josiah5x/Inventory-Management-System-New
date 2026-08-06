@@ -198,7 +198,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Currency *</span>
-                            <select class="form-select" id="currency" name="currency">
+                            <select class="form-select currency-select" id="currency" name="currency">
 
                                 {% for currency in currencies %}
                                 <option value="{{ currency.name }}" {% if currency.id == order.currency %}selected{% endif %}>
@@ -212,7 +212,7 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Supplier *</span>
-                            <select class="form-select" id="supplier_select" name="supplier_name">
+                            <select class="form-select supplier-select" id="supplier_select" name="supplier_name">
                                   {% for supplier in suppliers %}
                                     <option value="{{ supplier.id }}"
                                             {% if supplier.id == order.supplier_name %}selected{% endif %}
@@ -226,7 +226,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select" name="credit_fercility">
+                            <select class="form-select facility-select" name="credit_fercility">
 
                                 {% for credit_f in creditfacility %}
                                 <option value="{{ credit_f.id }}" 
@@ -311,7 +311,7 @@
               
 
                 <td style="min-width:300px;">
-                    <select class="product-selects" name="product_code">
+                    <select class="form-select product-select" name="product_code">
                         <option value="{{ item.product_code }}">{{ item.product_code }}</option>
                     </select>
                 </td>

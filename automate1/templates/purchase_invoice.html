@@ -121,7 +121,7 @@
 
 .select2-container--default .select2-selection--single {
     height: 42px;
-    border: 2px solid #0d6efd;
+    /* border: 2px solid #0d6efd; */
     border-radius: 8px;
     background: #fff;
 }
@@ -135,6 +135,7 @@
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 40px;
 }
+
 
 .product-item{
     padding:8px 12px;
@@ -157,9 +158,6 @@
     </div>
     <div><i class="bi bi-paperclip fs-4"></i> <i class="bi bi-bell fs-4 ms-4"></i></div>
 </div>
-
-
-
 
 
 
@@ -206,19 +204,16 @@
                     <div class="col-md-5">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Currency *</span>
-                            <select class="form-select" id="currency" name="currency">
+                            <select class="form-select currency-select" id="currency" name="currency">
                                 <option value="--None--">--None--</option>
-                                <!-- <option value="--None--">--None--</option> -->
-                                {% for currency in currencies %}
-                                <option value="{{currency.id}}">{{currency.name}}</option>
-                                {% endfor %}
+                               
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Supplier *</span>
-                            <select class="form-select form-control" id="supplier_select" name="supplier_name">
+                            <select class="form-select supplier-select" id="supplier_select" name="supplier_name">
                                 {% for supplier in suppliers %}
                                 <option value="{{supplier.id}}" data-address="{{supplier.address}}">{{supplier.name}}
                                 </option>
@@ -229,7 +224,7 @@
                     <div class="col-md-5">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select" id="credit_fercility" name="credit_fercility">
+                            <select class="form-select facility-select" id="credit_fercility" name="credit_fercility">
                                 <option value="--None--">--None--</option>
                                 {% for credit_f in creditfacility %}
                                 <option value="{{credit_f.id}}">{{credit_f.name}}</option>
