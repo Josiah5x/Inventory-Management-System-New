@@ -22,6 +22,7 @@ from .models import (
 def Index(request):
     return render(request, "index.html")
 
+
 def Purchase(request):
     # 1. Get the current date and time
     current_time = datetime.now()
@@ -35,15 +36,18 @@ def Purchase(request):
         "suppliers": suppliers,
         "creditfacility": creditfacility,
         "currencies": currencies,
-        "current_year":current_year,
+        "current_year": current_year,
     }
     return render(request, "purchase_invoice.html", context)
+
 
 def Login(request):
     return render(request, "login.html")
 
+
 def Dashboard(request):
     return render(request, "dashboard.html")
+
 
 def Product_Form(request):
     suppliers = Supplier.objects.all()
@@ -56,16 +60,20 @@ def Product_Form(request):
     }
     return render(request, "product_form2.html", context)
 
+
 def Sale(request):
     return render(request, "sale.html")
 
+
 def Invoice(request):
     return render(request, "invoice.html")
+
 
 def Supplier_form(request):
     supplier = Supplier.objects.all()
     context = {"supplier": supplier}
     return render(request, "supplier_list.html", context)
+
 
 def Purchase_list(request):
     # purchases = OrderDocument.objects.prefetch_related('items').all().order_by('-id')
@@ -83,10 +91,10 @@ def Purchase_list(request):
     # currencies = Currency.objects.all()
     # return render(request, "purchase_list.html", context)
 
+
 def Product_List(request):
     products = Product.objects.all().order_by("-id")
     return render(request, "product_list.html", {"products": products})
-
 
 
 def product_json(request):
@@ -95,45 +103,64 @@ def product_json(request):
     data = []
 
     for p in products:
-        data.append({
-            "id": p.id,
-            "product_code": p.product_code,
-            "product_name": p.product_name,
-            "description": p.description,
-            "unit": p.unit,
-            "price": float(p.selling_price or 0),
-        })
+        data.append(
+            {
+                "id": p.id,
+                "product_code": p.product_code,
+                "product_name": p.product_name,
+                "description": p.description,
+                "unit": p.unit,
+                "price": float(p.selling_price or 0),
+            }
+        )
 
     return JsonResponse(data, safe=False)
+
 
 def supplier_json(request):
-    
-    data = list(
-        Supplier.objects.values(
-            "id",
-            "name"
-        )
-    )
+
+    data = list(Supplier.objects.values("id", "name"))
     return JsonResponse(data, safe=False)
+
 
 def currency_json(request):
-    data = list(
-        Currency.objects.values(
-            "id",
-            "name"
-        )
-    )
+    data = list(Currency.objects.values("id", "name"))
     return JsonResponse(data, safe=False)
+
 
 def facility_json(request):
-    data = list(
-        CreditFacility.objects.values(
-            "id",
-            "name"
-        )
-    )
+    data = list(CreditFacility.objects.values("id", "name"))
     return JsonResponse(data, safe=False)
 
+
+def purchase_detail(request, pk):
+
+    purchase = OrderDocument.objects.select_related(
+        "supplier", "currency", "credit_facility"
+    ).get(pk=pk)
+
+    items = []
+
+    for item in purchase.items.all():
+
+        items.append(
+            {
+                "product": item.product.id,
+                "qty": item.qty,
+                "price": float(item.price),
+                "discount": float(item.discount),
+            }
+        )
+
+    return JsonResponse(
+        {
+            "id": purchase.id,
+            "supplier": purchase.supplier.id,
+            "currency": purchase.currency.id,
+            "facility": purchase.credit_facility.id,
+            "items": items,
+        }
+    )
 
 
 def Update_Purchase(request, pk):
@@ -154,11 +181,11 @@ def Update_Purchase(request, pk):
             "update_purchase.html",
             {
                 "order": order,
-                "orderitems": order.items.all(),   # All related OrderItems
+                "orderitems": order.items.all(),  # All related OrderItems
                 "suppliers": suppliers,
                 "creditfacility": creditfacility,
                 "currencies": currencies,
-                "current_year":current_year,
+                "current_year": current_year,
                 "order": order,
                 "orderitems": order.items.all(),
             },
@@ -218,6 +245,7 @@ def order_view(request, pk):
     order = get_object_or_404(OrderDocument, pk=pk)
     return render(request, "order_view.html", {"order": order})
 
+
 def order_delete(request, pk):
     if request.method == "POST":
         order = get_object_or_404(OrderDocument, pk=pk)
@@ -237,7 +265,6 @@ def credit_facility_create(request):
     return render(request, "creditfacility_form.html")
 
 
-
 @transaction.atomic
 def supplier_create(request):
     if request.method == "POST":
@@ -254,12 +281,14 @@ def supplier_create(request):
             messages.error(request, str(e))
     return render(request, "supplier_form.html")
 
+
 def vat_create(request):
     if request.method == "POST":
         Vat.objects.create(name=request.POST.get("name"))
         messages.success(request, "VAT saved successfully.")
         return redirect("vat_create")
     return render(request, "vat_form.html")
+
 
 def currency_create(request):
     if request.method == "POST":
@@ -312,6 +341,7 @@ def to_decimal(value):
         return Decimal("0")
     return Decimal(str(value).replace(",", ""))
 
+
 @ensure_csrf_cookie
 def save_purchase(request):
     print("POST Data:", request.body)
@@ -358,7 +388,7 @@ def save_purchase(request):
             traceback.print_exc()
             print("ERROR:", e)
 
-            return JsonResponse({"status": "error","message": str(e)}, status=400)
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
     return JsonResponse(
         {"status": "error", "message": "Method not allowed"}, status=405

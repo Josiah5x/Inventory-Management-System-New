@@ -121,7 +121,7 @@
 
 .select2-container--default .select2-selection--single {
     height: 42px;
-    border: 2px solid #0d6efd;
+    border: 2px solid #e7e7e8;
     border-radius: 8px;
     background: #fff;
 }
@@ -191,7 +191,7 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Date*</span>
-                            <input class="form-control text-center" type="date" name="date">
+                            <input class="form-control text-center" type="date" name="date" value="{{order.doc_date}}">
                         </div>
                     </div>
 
@@ -212,9 +212,9 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="col-md-2 col-form-label">Supplier *</span>
-                            <select class="form-select supplier-select" id="supplier_select" name="supplier_name">
+                            <select class="form-select supplier-select" id="supplier_select" data-selected="{{ order.supplier_name }}" name="supplier_name">
                                   {% for supplier in suppliers %}
-                                    <option value="{{ supplier.id }}"
+                                    <option data-selected="{{ order.supplier_name.id }}"
                                             {% if supplier.id == order.supplier_name %}selected{% endif %}
                                             data-address="{{ supplier.address }}">
                                         {{ supplier.name }}
@@ -226,7 +226,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select facility-select" name="credit_fercility">
+                            <select class="form-select facility-select" data-selected="{{ order.credit_fercility }}" name="credit_fercility">
 
                                 {% for credit_f in creditfacility %}
                                 <option value="{{ credit_f.id }}" 

@@ -143,39 +143,48 @@ $(document).ready(function () {
 
 
   // SUPPLIER
-  function loadSuppliers() {
+function loadSuppliers() {
 
     $(".supplier-select").each(function () {
 
-      let select = $(this);
+        let select = $(this);
 
-      if (select.hasClass("select2-hidden-accessible")) {
-        select.select2("destroy");
-      }
+        // Get the selected supplier id from HTML
+        let selectedId = select.data("selected");
 
-      select.empty();
+        // Destroy Select2 if already initialized
+        if (select.hasClass("select2-hidden-accessible")) {
+            select.select2("destroy");
+        }
 
-      select.append('<option value="">Select Supplier</option>');
+        select.empty();
 
-      suppliers.forEach(function (supplier) {
+        select.append('<option value="">Select Supplier</option>');
 
-        select.append(`
+        suppliers.forEach(function (supplier) {
+
+            select.append(`
                 <option value="${supplier.id}">
                     ${supplier.name}
                 </option>
             `);
 
-      });
+        });
 
-      select.select2({
-        width: "83%",
-        placeholder: "Search Supplier",
-        allowClear: true
-      });
+        select.select2({
+            width: "100%",
+            placeholder: "Search Supplier",
+            allowClear: true
+        });
+
+        // Set the selected supplier
+        if (selectedId) {
+            select.val(String(selectedId)).trigger("change");
+        }
 
     });
 
-  }
+}
 
   // CURRENCY
   function loadCurrencies() {
@@ -184,52 +193,42 @@ $(document).ready(function () {
 
       let select = $(this);
 
+      // Get the selected supplier id from HTML
+        let selectedId = select.data("selected");
+
+        
       if (select.hasClass("select2-hidden-accessible")) {
         select.select2("destroy");
       }
-
       select.empty();
-
       select.append('<option value="">Select Currency</option>');
-
       currencies.forEach(function (currency) {
-
         select.append(`
                 <option value="${currency.id}">
                     ${currency.name}
                 </option>
             `);
-
       });
-
       select.select2({
         width: "58%",
         placeholder: "Select Currency",
         allowClear: true,
         minimumResultsForSearch: Infinity
       });
-
     });
-
   }
 
   // FACILITY
   function loadFacilities() {
 
     $(".facility-select").each(function () {
-
       let select = $(this);
-
       if (select.hasClass("select2-hidden-accessible")) {
         select.select2("destroy");
       }
-
       select.empty();
-
       select.append('<option value="">Select Credit Facility</option>');
-
       facilities.forEach(function (facility) {
-
         select.append(`
                 <option value="${facility.id}">
                     ${facility.name}
