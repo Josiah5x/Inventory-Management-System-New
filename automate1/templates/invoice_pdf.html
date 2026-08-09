@@ -333,43 +333,26 @@ padding:20px;
     </thead>
 
     <tbody>
+      {% for item in items %}
       <tr>
-          <td>1</td>
-          <td>Logo Design</td>
-          <td>5</td>
-          <td>$100</td>
-          <td>$500</td>
-          <td>$500</td>
-          <td>$500</td>
-        <td>$500</td>
-    </tr>
-        <td>1</td>
-        <td>Logo Design</td>
-        <td>5</td>
-        <td>$100</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-    </tr>
-        <td>1</td>
-        <td>Logo Design</td>
-        <td>5</td>
-        <td>$100</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-    </tr>
-    <td>1</td>
-    <td>Logo Design</td>
-    <td>5</td>
-        <td>$100</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-        <td>$500</td>
-      </tr>
+          <td>{{ forloop.counter }}</td>
+           <td>
+            {% for product in products %}
+            {% if product.id|stringformat:"s" == item.product %}
+            {{ product.product_name }}
+            {% endif %}
+            {% endfor %}
+          </td>
+           <td>{{ item.product_description  }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.product_unit }}</td>
+            <td>{{ item.price|stringformat:".2f" }}</td>
+            <td>{{ item.total|stringformat:".2f" }}</td>
+            <td>0.0</td>
+            
+          </tr>
+          {% endfor %}
+      
       
     </tbody>
 </table>
@@ -386,7 +369,7 @@ padding:20px;
       <div class="grand">
         <span>GRAND TOTAL :</span>
 
-        <strong>$8,798</strong>
+        <strong>{{grand_total}}</strong>
       </div>
     </div>
   </div>

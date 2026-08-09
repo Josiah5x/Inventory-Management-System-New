@@ -35,7 +35,8 @@
                         </td>
                         </a>
                         <td>{{ purchase.doc_date }}</td>
-                        <td>{% for supplier in suppliers %}
+                        <td>
+                            {% for supplier in suppliers %}
                             {% if supplier.id|stringformat:"s" == purchase.supplier_name %}
                             {{ supplier.name }}
                             {% endif %}

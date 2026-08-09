@@ -25,5 +25,5 @@ urlpatterns = [
     path("vat/", views.vat_create, name="vat_create"),
     path("currency/", views.currency_create, name="currency_create"),
     path("credit-facility/", views.credit_facility_create, name="credit_facility_create"),
-    path("invoice/<int:invoice_id>/", views.render_invoice, name="invoice_view"),
+    path("invoice/<int:pk>/", views.render_invoice, name="invoice_view"),
 ]

@@ -50,7 +50,48 @@ def Login(request):
 def Dashboard(request):
     return render(request, "dashboard.html")
 
-def render_invoice(request, *args, **kwargs):
+def render_invoice(request, pk):
+     # 1. Fetch your model instance with optimized relationships
+    purchase = get_object_or_404(OrderDocument, pk=pk)
+    
+    # 2. Extract item rows into a context dictionary matching your schema
+    items = []
+    for item in purchase.items.all():
+        items.append({
+            "product": item.product_code,
+            "qty": item.product_qty,
+            "product_unit": item.product_unit,
+            "price": float(item.product_price),
+            "discount": float(item.discount),
+            "total": (float(item.product_qty) * float(item.product_price)) - float(item.discount)
+        })
+        
+    grand_total = sum(i['total'] for i in items)
+
+    products = Product.objects.all()
+
+    context = {
+        "purchase": purchase,
+        "products": products,
+        "items": items,
+        "grand_total": grand_total,
+    }
+    
+    
+    
+    # 1. Define your A4 page styling
+    a4_style = CSS(string='@page { size: A4 portrait; margin: 5mm; }')
+    # 2. Render your HTML template to a string
+    html_content = render_to_string('invoice_pdf.html', context, request=request)
+    # 3. Generate the PDF bytes (FIXED: added explicit 'stylesheets=' keyword)
+    pdf_file = HTML(string=html_content, base_url=request.build_absolute_uri()).write_pdf(stylesheets=[a4_style])
+    # 4. Create the HTTP response
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    # Optional Best Practice: Use attachment to force download, or inline to preview in browser
+    response['Content-Disposition'] = 'inline; filename="invoice.pdf"'
+    return response
+
+def render_invoice2(request, *args, **kwargs):
     invoice_id = kwargs.get('pk') or kwargs.get('invoice_id')
 
     name = invoice_id
@@ -84,7 +125,7 @@ def Sale(request):
 
 
 def Invoice(request):
-    return render(request, "invoice.html")
+    return render(request, "invoice_pdf.html")
 
 
 def Supplier_form(request):
