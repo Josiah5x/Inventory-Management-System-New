@@ -11,7 +11,7 @@ urlpatterns = [
     path("product", views.Product_Form, name="product"),
     path("product_create", views.product_create, name="product_create"),
     path("sale", views.Sale, name="sale"),
-    path("invoice", views.Invoice, name="invoice"),
+    path("invoice_temp", views.Invoice, name="invoice"),
     path("products/json/", views.product_json, name="product_json"),
     path("suppliers/json/", views.supplier_json, name="supplier_json"),
     path("currencies/json/", views.currency_json, name="currency_json"),
@@ -25,4 +25,5 @@ urlpatterns = [
     path("vat/", views.vat_create, name="vat_create"),
     path("currency/", views.currency_create, name="currency_create"),
     path("credit-facility/", views.credit_facility_create, name="credit_facility_create"),
+    path("invoice/<int:invoice_id>/", views.render_invoice, name="invoice_view"),
 ]

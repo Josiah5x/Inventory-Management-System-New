@@ -71,86 +71,88 @@
     }
 
     .product-code-col {
-    min-width: 280px;
-}
+        min-width: 280px;
+    }
 
-.description-col {
-    min-width: 200px;
-}
+    .description-col {
+        min-width: 200px;
+    }
 
-    .table-container{
-    max-height:500px;      /* Adjust the height as needed */
-    overflow-y:auto;
-    overflow-x:auto;
-    border:1px solid #dee2e6;
-    border-radius:8px;
-}
+    .table-container {
+        max-height: 500px;
+        /* Adjust the height as needed */
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
 
-.table-container table{
-    min-width:1400px;      /* Keeps all columns visible with horizontal scrolling */
-    margin-bottom:0;
-}
+    .table-container table {
+        min-width: 1400px;
+        /* Keeps all columns visible with horizontal scrolling */
+        margin-bottom: 0;
+    }
 
-.table-container thead th{
-    position:sticky;
-    top:0;
-    z-index:10;
-    background:#ebedee;
-    color:#2b2929;
-    white-space:nowrap;
-}
+    .table-container thead th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #ebedee;
+        color: #2b2929;
+        white-space: nowrap;
+    }
 
-.table-container td,
-.table-container th{
-    white-space:nowrap;
-    vertical-align:middle;
-}
+    .table-container td,
+    .table-container th {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
 
-.product-results{
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    background:#fff;
-    border:1px solid #ddd;
-    max-height:250px;
-    overflow-y:auto;
-    z-index:9999;
-    display:none;
-}
+    .product-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 9999;
+        display: none;
+    }
 
-.select2-container--default .select2-selection--single {
-    height: 42px;
-    border: 2px solid #e7e7e8;
-    border-radius: 8px;
-    background: #fff;
-}
+    .select2-container--default .select2-selection--single {
+        height: 42px;
+        border: 2px solid #e7e7e8;
+        border-radius: 8px;
+        background: #fff;
+    }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 38px;
-    padding-left: 10px;
-    font-size: 14px;
-}
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+        padding-left: 10px;
+        font-size: 14px;
+    }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 40px;
-}
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px;
+    }
 
-.product-item{
-    padding:8px 12px;
-    cursor:pointer;
-}
+    .product-item {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
 
-.product-item:hover{
-    background:#0d6efd;
-    color:#fff;
-}
+    .product-item:hover {
+        background: #0d6efd;
+        color: #fff;
+    }
 </style>
 <div class="toolbar d-flex justify-content-between">
     <div>
         <button class="btn btn-success"><i class="bi bi-plus-lg"></i> New</button>
         <button class="btn btn-warning" id="submitBtnUpdate" type="submit"></i> Save</button>
-        <button class="btn btn-dark border-light"><i class="bi bi-printer"></i> Print</button>
+        <a class="btn btn-dark border-light" href="{% url 'invoice_view' invoice.id %}"><i class="bi bi-printer"></i> Print</a>
         <i class="bi bi-arrow-clockwise fs-3 ms-4"></i>
         <i class="bi bi-list-ul fs-3 ms-3"></i>
         <i class="bi bi-search fs-3 ms-3"></i>
@@ -160,231 +162,391 @@
 <input type="hidden" id="document_id" value="{{ order.id }}">
 <form id="UpdatedataForm">
     {% csrf_token %}
-    <div class="container-fluid mt-1">
-        <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link active">Invoice</a></li>
-            <li class="nav-item"><a class="nav-link">Additional Info</a></li>
-        </ul>
 
+    <!-- ================= LEFT COLUMN ================= -->
 
+<div class="row g-3 pt-2">
 
-        
-        <div class="row mt-1">
-            <div class="col-lg-8">
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="col-md-2 col-form-label">Invoice*</span>
-                            <div class="col"><input class="form-control" name="doc_code" value="{{order.doc_code}}">
-                            </div>
-                            <div class="col"><input class="form-control" name="doc_year" value="{{order.doc_year}}">
-                            </div>
-                            <div class="col"><input class="form-control" name="doc_num" value="{{order.doc_num}}"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="col-md-5 col-form-label">Supplier Invoice</span>
-                            <input class="form-control" name="supplier_invoice" value="{{order.supplier_invoice}}">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="col-md-2 col-form-label">Date*</span>
-                            <input class="form-control text-center" type="date" name="date" value="{{order.doc_date}}">
-                        </div>
-                    </div>
+    <!-- ================================================= -->
+    <!-- LEFT : INVOICE INFORMATION - 6 COLUMNS -->
+    <!-- ================================================= -->
+    <div class="col-lg-5">
 
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="col-md-5 col-form-label">Currency *</span>
-                            <select class="form-select currency-select" id="currency" name="currency">
+        <!-- Invoice -->
+        <div class="row mb-1">
 
-                                {% for currency in currencies %}
-                                <option value="{{ currency.name }}" {% if currency.id == order.currency %}selected{% endif %}>
-                                    {{ currency.name }}
-                                </option>
-                                {% endfor %}
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="col-md-2 col-form-label">Supplier *</span>
-                            <select class="form-select supplier-select" id="supplier_select" data-selected="{{ order.supplier_name }}" name="supplier_name">
-                                  {% for supplier in suppliers %}
-                                    <option data-selected="{{ order.supplier_name.id }}"
-                                            {% if supplier.id == order.supplier_name %}selected{% endif %}
-                                            data-address="{{ supplier.address }}">
-                                        {{ supplier.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="col-md-5 col-form-label">Credit Facility *</span>
-                            <select class="form-select facility-select" data-selected="{{ order.credit_fercility }}" name="credit_fercility">
-
-                                {% for credit_f in creditfacility %}
-                                <option value="{{ credit_f.id }}" 
-                                {% if credit_f.id == order.credit_fercility %}selected{% endif %}>
-                                    {{ credit_f.name }}
-                                </option>
-                                {% endfor %}
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="col-md-2 col-form-label">Address*</span>
-                            <!-- <label>Address</label> -->
-                            <textarea class="form-control" id="supplier_address" name="supplier_address"
-                                readonly> {{order.address}}</textarea>
-                        </div>
-                        <div class="col-md-6 mt-3">
-                            <div class="input-group">
-                                <span class="col-md-4 col-form-label">Project *</span>
-                                <!-- <label>Project</label> -->
-                                <input class="form-control" name="project">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-sm-2">
+                <span class="form-label">Invoice*</span>
             </div>
-            <!-- ///////////// -->
 
-            <div class="col-lg-4">
-                <div class="summary">
+            <div class="col-sm-8">
+
+                <div class="row g-2">
+
+                    <div class="col-sm-4">
+                        <input type="text"
+                               class="form-control"
+                               name="doc_code"
+                               placeholder="Code"
+                               value="{{ order.doc_code }}">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="text"
+                               class="form-control"
+                               name="doc_year"
+                               placeholder="Year"
+                               value="{{ order.doc_year }}">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="text"
+                               class="form-control"
+                               name="doc_num"
+                               placeholder="No."
+                               value="{{ order.doc_num }}">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Date -->
+        <div class="row mb-1">
+
+            <div class="col-sm-2">
+                <span class="form-label">Date*</span>
+            </div>
+
+            <div class="col-sm-8">
+
+                <input type="date"
+                       class="form-control"
+                       name="date"
+                       value="{{ order.doc_date }}">
+
+            </div>
+
+        </div>
+
+
+        <!-- Supplier -->
+        <div class="row mb-1">
+
+            <div class="col-sm-2">
+                <span class="form-label">Supplier*</span>
+            </div>
+
+            <div class="col-sm-8">
+
+                <select class="form-select supplier-select"
+                        id="supplier_select"
+                        data-selected="{{ order.supplier_name }}"
+                        name="supplier_name">
+
+                    {% for supplier in suppliers %}
+
+                        <option value="{{ supplier.id }}"
+                                data-address="{{ supplier.address }}"
+                                {% if supplier.id == order.supplier_name %}selected{% endif %}>
+                            {{ supplier.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- Address -->
+        <div class="row mb-1">
+
+            <div class="col-sm-2">
+                <span class="form-label">Address*</span>
+            </div>
+
+            <div class="col-sm-8">
+
+                <textarea class="form-control"
+                          id="supplier_address"
+                          name="supplier_address"
+                          rows="1"
+                          readonly>{{ order.address }}</textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- Project -->
+        <div class="row mb-1">
+
+            <div class="col-sm-2">
+                <span class="form-label">Project*</span>
+            </div>
+
+            <div class="col-sm-8">
+
+                <input type="text"
+                       class="form-control"
+                       name="project"
+                       value="{{ order.project }}"
+                       placeholder="Project">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- MIDDLE : SUPPLIER INFORMATION - 3 COLUMNS -->
+    <!-- ================================================= -->
+    <div class="col-lg-4">
+
+        <!-- Supplier Invoice -->
+        <div class="row mb-1">
+
+            <div class="col-md-4">
+                <label class="form-label mb-1">
+                    Supplier Invoice
+                </label>
+            </div>
+                <div class="col-sm-6">
+
+                    <input type="text"
+                    class="form-control"
+                    name="supplier_invoice"
+                    value="{{ order.supplier_invoice }}">
+                    
+                </div>
+        </div>
+
+
+        <!-- Currency -->
+        <div class="row mb-1">
+
+            <div class="col-sm-4">
+                <label class="form-label mb-1">
+                    Currency*
+                </label>
+            </div>
+                <div class="col-sm-6">
+
+                    <select class="form-select currency-select"
+                    id="currency"
+                    data-selected="{{ order.currency }}"
+                    name="currency">
+                    
+                    {% for currency in currencies %}
+                    
+                    <option value="{{ currency.name }}"
+                    {% if currency.id == order.currency %}selected{% endif %}>
+                    {{ currency.name }}
+                </option>
+                
+                {% endfor %}
+                
+            </select>
+            
+            </div>
+
+        </div>
+
+
+        <!-- Credit Facility -->
+        <div class="row mb-1">
+
+            <div class="col-sm-4">
+                <label class="form-label mb-1">
+                    Credit Facility*
+                </label>
+            </div>
+                <div class="col-sm-6">
+
+                    <select class="form-select facility-select"
+                    data-selected="{{ order.credit_fercility }}"
+                    name="credit_fercility">
+
+                    {% for credit_f in creditfacility %}
+
+                        <option value="{{ credit_f.id }}"
+                                {% if credit_f.id == order.credit_fercility %}selected{% endif %}>
+                            {{ credit_f.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+            </div>
+        </div>
+        </div>
+
+    
+    <!-- ================================================= -->
+    <!-- RIGHT : INVOICE SUMMARY - 3 COLUMNS -->
+    <!-- ================================================= -->
+    <div class="col-lg-3">
+
+         <div class="summary">
                     <div class="d-flex justify-content-between"><b>Amount</b><span>120,000.00</span></div>
                     <div class="d-flex justify-content-between mt-3"><b>Discount</b><span>0.00%</span></div>
                     <div class="d-flex justify-content-between mt-3"><b>VAT</b><span>9,000.00</span></div>
                     <hr>
                     <div class="d-flex justify-content-between align-items-center">
-                        <div style="font-size:46px;font-weight:700">NGN</div>
-                        <div class="total">129,000.00</div>
+                        <div style="font-size:25px;font-weight:700">NGN</div>
+                        <div class="total">
+                                    <input type="text"
+                                id="invoice_total"
+                                class="form-control text-end fw-bold"
+                                readonly
+                                value="0.00">
+                        </div>
                     </div>
                     <p class="text-end text-primary">Unpaid 129,000.00</p>
                 </div>
             </div>
         </div>
-        <div id="loader" style="display: none;">
-            <span class="spinner"></span> Saving...
-        </div>
-        <div id="response-message"></div>
-        <div class="d-flex justify-content-between align-items-center mb-2">
-    <button type="button" class="btn btn-primary" id="add-row">
-        <i class="bi bi-plus-circle"></i>
-    </button>
-</div>
-        <div class="table-container">
-    <table class="table table-hover">
-        <thead class="table-dark sticky-top">
-            <tr>
-                        <th>
-                        </th>
-                        <th class="product-code-col">Product</th>
-                        <th class="description-col">Description</th>
-                        <th style="min-width: 150px;">Warehouse</th>
-                        <th style="min-width: 100px;">Qty</th>
-                        <th style="min-width: 80px;">Unit</th>
-                        <th style="min-width: 130px;">Unit Price</th>
-                        <th style="min-width: 120px;">Amount</th>
-                        <th style="min-width: 100px;">Disc%</th>
-                        <th style="min-width: 100px;">Discount</th>
-                        <th style="min-width: 100px;">Gross Amount</th>
-                    </tr>
-        </thead>
 
-        <tbody id="table-body">
-            {% for item in orderitems %}
-
-            <tr>         
-                <td>
-                   <button type="button"  class="btn btn-danger remove-row" data-bs-toggle="modal" data-bs-target="#confirmModal" id="delete-row">
-                      <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              
-
-                <td style="min-width:300px;">
-                    <select class="form-select product-select" name="product_code">
-                        <option value="{{ item.product_code }}">{{ item.product_code }}</option>
-                    </select>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="product_description" value="{{ item.product_description }}">
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="warehouse" value="{{item.warehouse}}">
-                </td>
-
-                <td>
-                    <input type="number" class="form-control" name="product_qty" value="{{item.product_qty}}">
-                </td>
-
-                <td>
-                    <select class="form-control" name="product_unit">
-                        <option value="{{item.product_unit}}">{{item.product_unit}}</option>
-                        <option>Pcs</option>
-                        <option>Lts</option>
-                        <option>Sets</option>
-                        <option>Gals</option>
-                        <option>Mtrs</option>
-                    </select>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="product_price" value="{{item.product_price}}">
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="product_amount" value="{{item.product_amount}}" readonly>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="percentage_discount" value="{{item.percentage_discount}}">
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="discount" value="{{item.discount}}" readonly>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" name="gross_amount" value="{{item.gross_amount}}" readonly>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-
-    </table>
+    </div>
 
 </div>
+
+
+
+
+
+    <!-- ///////////// -->
+
+
+    <div id="loader" style="display: none;">
+        <span class="spinner"></span> Saving...
+    </div>
+    <div id="response-message"></div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <button type="button" class="btn btn-primary" id="add-row">
+            <i class="bi bi-plus-circle"></i>
+        </button>
+    </div>
+    <div class="container-fuid table-container">
+        <table class="table table-hover">
+            <thead class="table-dark sticky-top">
+                <tr>
+                    <th>
+                    </th>
+                    <th class="product-code-col">Product</th>
+                    <th class="description-col">Description</th>
+                    <th style="min-width: 150px;">Warehouse</th>
+                    <th style="min-width: 100px;">Qty</th>
+                    <th style="min-width: 80px;">Unit</th>
+                    <th style="min-width: 130px;">Unit Price</th>
+                    <th style="min-width: 120px;">Amount</th>
+                    <th style="min-width: 100px;">Disc%</th>
+                    <th style="min-width: 100px;">Discount</th>
+                    <th style="min-width: 100px;">Gross Amount</th>
+                </tr>
+            </thead>
+
+            <tbody id="table-body">
+                {% for item in orderitems %}
+
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-row" data-bs-toggle="modal"
+                            data-bs-target="#confirmModal" id="delete-row">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+
+                    <td style="min-width:300px;">
+                        <select class="form-select product-select" data-selected="{{ item.product_code }}"
+                            name="product_code">
+                            <option value="{{ item.product_code }}">{{ item.product_code }}</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="product_description"
+                            value="{{ item.product_description }}">
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="warehouse" value="{{item.warehouse}}">
+                    </td>
+
+                    <td>
+                        <input type="number" class="form-control" name="product_qty" value="{{item.product_qty}}">
+                    </td>
+
+                    <td>
+                        <select class="form-control" name="product_unit">
+                            <option value="{{item.product_unit}}">{{item.product_unit}}</option>
+                            <option>Pcs</option>
+                            <option>Lts</option>
+                            <option>Sets</option>
+                            <option>Gals</option>
+                            <option>Mtrs</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="product_price" value="{{item.product_price}}">
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="product_amount" value="{{item.product_amount}}"
+                            readonly>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="percentage_discount"
+                            value="{{item.percentage_discount}}">
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="discount" value="{{item.discount}}" readonly>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control" name="gross_amount" value="{{item.gross_amount}}"
+                            readonly>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
     </div>
 </form>
 
 <!-- MODAL SECTION -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirm Deletion</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to remove this row?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteRow">Yes, Delete</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this row?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteRow">Yes, Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock content %}

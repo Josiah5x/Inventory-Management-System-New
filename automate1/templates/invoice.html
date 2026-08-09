@@ -1,10 +1,247 @@
 <!-- Static file loader -->
 {% load static %} {% load custom_tags %} {% block content %}
 
-  <link href="{% static 'bootstrap-5.3.8-dist/css/bootstrap.min.css'%}" rel="stylesheet"/>
+
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#ececec;
+    font-family:Poppins,sans-serif;
+    padding:0px;
+
+}
+
+.invoice{
+
+    width:900px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+
+}
+
+.logo{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+.circle{
+
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#60a5fa);
+
+}
 
 
-<link href="{% static 'css/invoice_style.css'%}" rel="stylesheet" />
+
+
+hr{
+
+    margin:20px 0;
+
+}
+
+.top{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:40px;
+
+}
+
+
+
+.company-info{
+
+    text-align:right;
+
+}
+
+.customer h2{
+
+    margin:10px 0;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#2f68c6;
+    color:white;
+
+}
+
+th{
+
+    padding:12px;
+
+}
+
+td{
+
+    padding:10px;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+tbody tr:nth-child(even){
+
+    background:#eaf5ff;
+
+}
+
+.middle{
+
+    margin-top:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+}
+
+.totals{
+
+    width:300px;
+
+}
+
+.totals p{
+
+    display:flex;
+    justify-content:space-between;
+    margin:8px 0;
+
+}
+
+.grand{
+
+    background:#2f68c6;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-size:22px;
+    font-weight:bold;
+    margin-top:20px;
+
+}
+
+.bottom{
+
+    display:flex;
+    justify-content:space-between;
+    margin-top:50px;
+
+}
+
+.payment{
+
+    width:45%;
+
+}
+
+.payment h3{
+
+    background:#2f68c6;
+    color:white;
+    padding:10px;
+    margin-bottom:20px;
+
+}
+
+.payment p{
+
+    margin:10px 0;
+
+}
+
+.signature{
+
+    width:35%;
+    text-align:center;
+    align-self:flex-end;
+
+}
+
+.sign{
+
+    font-family:cursive;
+    font-size:36px;
+    margin-bottom:15px;
+
+}
+
+.footer{
+
+    margin-top:10px;
+    border-top:3px solid #2f68c6;
+    padding-top:15px;
+    display:flex;
+    justify-content:space-between;
+    color:#444;
+    font-size:15px;
+
+}
+
+@media print{
+
+body{
+
+background:white;
+padding:0;
+
+}
+
+.invoice{
+
+box-shadow:none;
+width:100%;
+padding:20px;
+
+}
+
+.title{
+
+    color:#2f68c6;
+    font-size:20px;
+    text-align: left;
+
+}
+.title_invoice{
+    margin-top:30px;
+    color:#2f68c6;
+    font-size:13px;
+    text-align: right;
+
+}
+.subtitle{
+  font-size: 13px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+}
+
+
+}
+</style>
 <!-- The Modal -->
 <div class="invoice">
   <!-- Header -->
@@ -14,27 +251,30 @@
       <!-- <div class="circle"></div> -->
 
       <div>
-        <h1 class="fw-bold">GOMAK TECHNICAL VENTURE</h1>
-
-        <p class="text-center fw-bold lh-1">
+        <h1 class="title">GOMAK TECHNICAL VENTURE</h1>
+        
+        <p class="subtitle lh-1">
           SPECIALISE ON FORK LIFT, GEN-SET, EARTHMOVING EQUIPMENTS
         </p>
 
-        <p class="text-center fw-bold lh-1">
+        <p class="subtitle">
           SPECIALISED INDUSTRIAL SPARES & AUTO SPARE PARTS
         </p>
       </div>
     </div>
   </div>
 
+  <div class="title_invoice">
+    <h1 class="">Sale Invoice</h1>
+  </div>
 <div class="footer"></div>
   <!-- Top Section -->
-
+  
   <div class="top lh-1">
-    <div class="customer lh-1">
+    <div class="customer">
       <p>Invoice to :</p>
-
-      <h2>Ketut Susilo</h2>
+      
+      <h2>{{name}}</h2>
 
       <p>123-456-7890</p>
 
@@ -43,9 +283,6 @@
       <p>123 Anywhere St., Any City</p>
     </div>
 
-    <div class="title lh-1">
-      <h1 class="text-center fw-bold">INVOICE</h1>
-    </div>
 
     <div class="company-info lh-1">
       <p>07026023234</p>

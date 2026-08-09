@@ -190,16 +190,16 @@ function loadSuppliers() {
   function loadCurrencies() {
 
     $(".currency-select").each(function () {
-
       let select = $(this);
 
       // Get the selected supplier id from HTML
-        let selectedId = select.data("selected");
+      let selectedId = select.data("selected");
 
-        
+      // Destroy Select2 if already initialized
       if (select.hasClass("select2-hidden-accessible")) {
         select.select2("destroy");
       }
+
       select.empty();
       select.append('<option value="">Select Currency</option>');
       currencies.forEach(function (currency) {
@@ -210,11 +210,16 @@ function loadSuppliers() {
             `);
       });
       select.select2({
-        width: "58%",
+        width: "100%",
         placeholder: "Select Currency",
         allowClear: true,
-        minimumResultsForSearch: Infinity
+        minimumResultsForSearch: Infinity,
       });
+
+      // Set the selected Currency
+      if (selectedId) {
+        select.val(String(selectedId)).trigger("change");
+      }
     });
   }
 
@@ -223,9 +228,15 @@ function loadSuppliers() {
 
     $(".facility-select").each(function () {
       let select = $(this);
+
+      // Get the selected supplier id from HTML
+      let selectedId = select.data("selected");
+
+      // Destroy Select2 if already initialized
       if (select.hasClass("select2-hidden-accessible")) {
         select.select2("destroy");
       }
+
       select.empty();
       select.append('<option value="">Select Credit Facility</option>');
       facilities.forEach(function (facility) {
@@ -234,16 +245,19 @@ function loadSuppliers() {
                     ${facility.name}
                 </option>
             `);
-
       });
 
       select.select2({
-        width: "58%",
+        width: "100%",
         placeholder: "Select Credit Facility",
         allowClear: true,
-        minimumResultsForSearch: Infinity
+        minimumResultsForSearch: Infinity,
       });
 
+      // Set the selected Credit Facility
+      if (selectedId) {
+        select.val(String(selectedId)).trigger("change");
+      }
     });
 
   }
@@ -265,6 +279,14 @@ function loadSuppliers() {
     $(".product-select").each(function () {
       let select = $(this);
 
+      // Get the selected supplier id from HTML
+      let selectedId = select.data("selected");
+
+      // Destroy Select2 if already initialized
+      if (select.hasClass("select2-hidden-accessible")) {
+        select.select2("destroy");
+      }
+
       select.empty();
 
       select.append('<option value="">Select Product</option>');
@@ -283,6 +305,10 @@ function loadSuppliers() {
         placeholder: "Search Product...",
         allowClear: true,
       });
+      // Set the selected product
+      if (selectedId) {
+        select.val(String(selectedId)).trigger("change");
+      }
     });
   }
 
@@ -438,8 +464,7 @@ function loadSuppliers() {
     return items;
   }
 
-  console.log($("#table-body").html());
-  console.log($("#table-body tr").length);
+  // console.log($("#table-body tr").length);
 
   // ==========================
   // Build Parent Object

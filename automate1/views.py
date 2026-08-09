@@ -3,8 +3,10 @@ import json, traceback
 from decimal import Decimal
 from datetime import datetime
 from django.db import transaction
+from django.template.loader import get_template, render_to_string
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from weasyprint import HTML, CSS
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.db import transaction
 from .models import (
@@ -48,6 +50,22 @@ def Login(request):
 def Dashboard(request):
     return render(request, "dashboard.html")
 
+def render_invoice(request, *args, **kwargs):
+    invoice_id = kwargs.get('pk') or kwargs.get('invoice_id')
+
+    name = invoice_id
+    # 1. Define your A4 page styling
+    a4_style = CSS(string='@page { size: A4 portrait; margin: 5mm; }')
+    # 2. Render your HTML template to a string
+    html_content = render_to_string('invoice.html', {"name": name})
+    # 3. Generate the PDF bytes (FIXED: added explicit 'stylesheets=' keyword)
+    pdf_file = HTML(string=html_content, base_url=request.build_absolute_uri()).write_pdf(stylesheets=[a4_style])
+    # 4. Create the HTTP response
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    # Optional Best Practice: Use attachment to force download, or inline to preview in browser
+    response['Content-Disposition'] = 'inline; filename="invoice.pdf"'
+    return response
+
 
 def Product_Form(request):
     suppliers = Supplier.objects.all()
@@ -76,9 +94,9 @@ def Supplier_form(request):
 
 
 def Purchase_list(request):
-    # purchases = OrderDocument.objects.prefetch_related('items').all().order_by('-id')
+    purchases = OrderDocument.objects.prefetch_related('items').all()
 
-    purchases = OrderDocument.objects.all()
+    # purchases = OrderDocument.objects.all()
     currencies = Currency.objects.all()
     suppliers = Supplier.objects.all()
     context = {
