@@ -26,4 +26,5 @@ urlpatterns = [
     path("currency/", views.currency_create, name="currency_create"),
     path("credit-facility/", views.credit_facility_create, name="credit_facility_create"),
     path("invoice/<int:pk>/", views.render_invoice, name="invoice_view"),
+    # path("invoice", views.render_invoice2, name="invoice_view"),
 ]

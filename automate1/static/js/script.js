@@ -143,48 +143,48 @@ $(document).ready(function () {
 
 
   // SUPPLIER
-function loadSuppliers() {
+  function loadSuppliers() {
 
     $(".supplier-select").each(function () {
 
-        let select = $(this);
+      let select = $(this);
 
-        // Get the selected supplier id from HTML
-        let selectedId = select.data("selected");
+      // Get the selected supplier id from HTML
+      let selectedId = select.data("selected");
 
-        // Destroy Select2 if already initialized
-        if (select.hasClass("select2-hidden-accessible")) {
-            select.select2("destroy");
-        }
+      // Destroy Select2 if already initialized
+      if (select.hasClass("select2-hidden-accessible")) {
+        select.select2("destroy");
+      }
 
-        select.empty();
+      select.empty();
 
-        select.append('<option value="">Select Supplier</option>');
+      select.append('<option value="">Select Supplier</option>');
 
-        suppliers.forEach(function (supplier) {
+      suppliers.forEach(function (supplier) {
 
-            select.append(`
+        select.append(`
                 <option value="${supplier.id}">
                     ${supplier.name}
                 </option>
             `);
 
-        });
+      });
 
-        select.select2({
-            width: "100%",
-            placeholder: "Search Supplier",
-            allowClear: true
-        });
+      select.select2({
+        width: "100%",
+        placeholder: "Search Supplier",
+        allowClear: true
+      });
 
-        // Set the selected supplier
-        if (selectedId) {
-            select.val(String(selectedId)).trigger("change");
-        }
+      // Set the selected supplier
+      if (selectedId) {
+        select.val(String(selectedId)).trigger("change");
+      }
 
     });
 
-}
+  }
 
   // CURRENCY
   function loadCurrencies() {
