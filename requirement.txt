@@ -1,2 +1,6 @@
+//Window users
 pip install playwright 
 python -m playwright install chromium
+
+//Ubuntu
+pip install weasyprint

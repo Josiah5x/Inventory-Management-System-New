@@ -7,10 +7,9 @@ from django.template.loader import get_template, render_to_string
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 
-# from weasyprint import HTML, CSS
-from pyhtml2pdf import converter
-from jinja2 import Environment, FileSystemLoader
-from playwright.sync_api import sync_playwright
+from weasyprint import HTML, CSS
+# from jinja2 import Environment, FileSystemLoader
+# from playwright.sync_api import sync_playwright
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.db import transaction
 from .models import (
@@ -54,15 +53,13 @@ def Login(request):
 def Dashboard(request):
     return render(request, "dashboard.html")
 
-
-def render_invoice(request, pk):
+# // playwright for Window Users
+def render_invoice2(request, pk):
 
     # 1. Fetch purchase
     purchase = get_object_or_404(OrderDocument, pk=pk)
-
     # 2. Extract item rows
     items = []
-
     for item in purchase.items.all():
 
         qty = float(item.product_qty or 0)
@@ -87,6 +84,9 @@ def render_invoice(request, pk):
 
     # 4. Products
     products = Product.objects.all()
+    # day-month-year
+    current_time = datetime.now()
+    date = f"{current_time.day} / {current_time.month} / {current_time.year}"
 
     # 5. Jinja context
     context = {
@@ -94,6 +94,7 @@ def render_invoice(request, pk):
         "products": products,
         "items": items,
         "grand_total": grand_total,
+        "date": date,
     }
 
     # 6. Load Jinja template
@@ -128,8 +129,8 @@ def render_invoice(request, pk):
 
     return response
 
-
-def render_invoice3(request, pk):
+# // weasyprint for linux users
+def render_invoice(request, pk):
     # 1. Fetch your model instance with optimized relationships
     purchase = get_object_or_404(OrderDocument, pk=pk)
 
@@ -150,17 +151,23 @@ def render_invoice3(request, pk):
 
     grand_total = sum(i["total"] for i in items)
 
+    # product
     products = Product.objects.all()
+    # day-month-year
+    current_time = datetime.now()
+    date = f"{current_time.day} / {current_time.month} / {current_time.year}"
+
 
     context = {
         "purchase": purchase,
         "products": products,
         "items": items,
         "grand_total": grand_total,
+        "date": date,
     }
 
     # 1. Define your A4 page styling
-    a4_style = CSS(string="@page { size: A4 portrait; margin: 5mm; }")
+    a4_style = CSS(string="@page { size: A4 portrait; margin: 2mm; }")
     # 2. Render your HTML template to a string
     html_content = render_to_string("invoice_pdf.html", context, request=request)
     # 3. Generate the PDF bytes (FIXED: added explicit 'stylesheets=' keyword)
@@ -174,10 +181,6 @@ def render_invoice3(request, pk):
     return response
 
 
-def render_invoice2(request):
-    # Convert the URL to a PDF
-    response = converter.convert("http://localhost:9000/invoice", "urlToPdf.pdf")
-    return response
 
 
 def Product_Form(request):

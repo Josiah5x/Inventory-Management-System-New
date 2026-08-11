@@ -7,6 +7,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
+    
 }
 
 body{
@@ -79,6 +80,7 @@ table{
 
     width:100%;
     border-collapse:collapse;
+    
 
 }
 
@@ -91,14 +93,15 @@ thead{
 
 th{
 
-    padding:12px;
+    padding:8px;
+    font-size: x-small;
 
 }
 
 td{
 
     padding:10px;
-
+    font-size: small;
     border-bottom:1px solid #ddd;
 
 }
@@ -136,10 +139,10 @@ tbody tr:nth-child(even){
 
     background:#2f68c6;
     color:white;
-    padding:15px;
+    padding:8px;
     display:flex;
     justify-content:space-between;
-    font-size:22px;
+    font-size:12px;
     font-weight:bold;
     margin-top:20px;
 
@@ -285,24 +288,20 @@ padding:20px;
 
 
     <div class="company-info lh-1">
-      <p>07026023234</p>
-
-      <p>08057275306</p>
-
-      <p>08060253960</p>
-
-      <p>EMAIL : CHAMIEL_N2E@YAHOO.COM</p>
+      <p style="text-align: left;">07026023234, 08057275306</p>
+      <p style="text-align: left;">08060253960</p>
+      <p>Email:charniel_n2e@yahoo.com</p>
 
       <br />
 
-      <h3>Invoice No : 12345</h3>
+      <h3 style="text-align: left;">Invoice No : 12345</h3>
 
-      <p>25 June 2022</p>
+      <p style="text-align: left;">{{date}}</p>
     </div>
   </div>
 
   <!-- Table -->
-<div class="container-fluid mt-0 pt-0">
+<div class="container mt-0 pt-0">
 
     <table>
         <thead>
@@ -339,11 +338,11 @@ padding:20px;
            <td>
             {% for product in products %}
             {% if product.id|stringformat:"s" == item.product %}
-            {{ product.product_name }}
-            {% endif %}
-            {% endfor %}
+            {{ product.product_code }}
           </td>
-           <td>{{ item.product_description  }}</td>
+          <td>{{ product.product_name }}</td>
+          {% endif %}
+          {% endfor %}
             <td>{{ item.qty }}</td>
             <td>{{ item.product_unit }}</td>
             <td>{{ item.price|stringformat:".2f" }}</td>
