@@ -7,9 +7,9 @@ from django.template.loader import get_template, render_to_string
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 
-from weasyprint import HTML, CSS
+# from weasyprint import HTML, CSS
 # from jinja2 import Environment, FileSystemLoader
-# from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.db import transaction
 from .models import (
@@ -54,7 +54,7 @@ def Dashboard(request):
     return render(request, "dashboard.html")
 
 # // playwright for Window Users
-def render_invoice2(request, pk):
+def render_invoice(request, pk):
 
     # 1. Fetch purchase
     purchase = get_object_or_404(OrderDocument, pk=pk)
@@ -113,7 +113,7 @@ def render_invoice2(request, pk):
             format="A4",
             print_background=True,
             margin={
-                "top": "5mm",
+                "top": "15mm",
                 "right": "5mm",
                 "bottom": "5mm",
                 "left": "5mm",
@@ -130,7 +130,7 @@ def render_invoice2(request, pk):
     return response
 
 # // weasyprint for linux users
-def render_invoice(request, pk):
+def render_invoice2(request, pk):
     # 1. Fetch your model instance with optimized relationships
     purchase = get_object_or_404(OrderDocument, pk=pk)
 

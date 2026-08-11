@@ -159,10 +159,15 @@
     <div>
         <a class="btn btn-dark border-light" href="{% url 'invoice_view' order.id %}"><i class="bi bi-printer"></i> Print {{ order.id }}</a>
         <a class="btn btn-dark border-success" href="{% url 'invoice_view' order.id %}"><i class="bi bi-printer"></i> Print WayBill {{ order.id }}</a>
-        <i class="bi bi-paperclip fs-4"></i> <i class="bi bi-bell fs-4 ms-4"></i>555
+        <i class="bi bi-paperclip fs-4"></i> <i class="bi bi-bell fs-4 ms-4"></i>
     </div>
 </div>
 <input type="hidden" id="document_id" value="{{ order.id }}">
+<div class="container-fluid mt-1">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active">Invoice</a></li>
+            <li class="nav-item"><a class="nav-link">Additional Info</a></li>
+        </ul>
 <form id="UpdatedataForm">
     {% csrf_token %}
 
@@ -434,7 +439,7 @@
         <span class="spinner"></span> Saving...
     </div>
     <div id="response-message"></div>
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="container-fluid d-flex justify-content-between align-items-center mb-2">
         <button type="button" class="btn btn-primary" id="add-row">
             <i class="bi bi-plus-circle"></i>
         </button>
